@@ -1,0 +1,101 @@
+# 加解密根密码
+jasypt:
+  encryptor:
+    #根密码，改完密码要把base_upms.sys_datasource数据库表清空，否则代码生成器无法启动
+    password: aiforest
+spring:
+  servlet:
+    multipart:
+      location: /home
+  # redis 相关
+  redis:
+    host: base-redis
+    port: 6379
+    password: 
+    database: 1
+# logging日志
+logging:
+  level:
+    com.alibaba.nacos.client.naming: error
+# 暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+# feign 配置
+feign:
+  hystrix:
+    enabled: true
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+# hystrix If you need to use ThreadLocal bound variables in your RequestInterceptor`s
+# you will need to either set the thread isolation strategy for Hystrix to `SEMAPHORE or disable Hystrix in Feign.
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 60000
+  shareSecurityContext: true
+#请求处理的超时时间
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+# mybaits-plus配置
+mybatis-plus:
+  # MyBatis Mapper所对应的XML文件位置
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  # 自定义TypeHandler
+  type-handlers-package: com.aiforest.cloud.common.data.mybatis.typehandler
+  global-config:
+    sql-parser-cache: true
+    # 关闭MP3.0自带的banner
+    banner: false
+    db-config:
+      # 主键类型
+      id-type: auto
+#swagger公共信息
+swagger:
+  title: aiforest API
+  description: aiforest
+  license: Powered By aiforest
+  licenseUrl: http://www.aiforest.net/
+  terms-of-service-url: http://www.aiforest.com/
+  authorization:
+    name: OAuth
+    auth-regex: ^.*$
+    authorization-scope-list:
+      - scope: server
+        description: server all
+    token-url-list:
+      - http://base-gateway:9999/auth/oauth/token
+## spring security 配置
+security:
+  oauth2:
+    client:
+      # 无需token访问的url,如果子模块重写这里的配置就会被覆盖
+      release-urls:
+        - /actuator/**
+        - /v2/api-docs
+    resource:
+      loadBalanced: true
+      token-info-uri: http://base-auth/oauth/check_token
+## 文件存放目录配置（用来存放微信支付证书）
+home-dir:
+  windows: D:/aiforest-file/
+  linux: /mnt/install/aiforest-file/

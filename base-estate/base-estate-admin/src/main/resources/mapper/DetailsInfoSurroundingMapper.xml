@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.DetailsInfoSurroundingMapper">
+
+    <resultMap id="detailsInfoSurroundingMap" type="com.aiforest.cloud.estate.common.entity.DetailsInfoSurrounding">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="detailsId" column="details_id"/>
+        <result property="name" column="name"/>
+        <result property="content" column="content"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="detailsInfoSurroundingSql">
+        obj.`id`,
+        obj.`tenant_id`,
+        obj.`details_id`,
+        obj.`name`,
+        obj.`content`,
+        obj.`create_time`,
+        obj.`update_time`
+    </sql>
+
+
+	<select id="listByDetailsId" resultMap="detailsInfoSurroundingMap">
+		SELECT
+		<include refid="detailsInfoSurroundingSql"/>
+		FROM details_info_surrounding obj
+		<!--<where>-->
+			<!--<if test="query.detailsId != null">-->
+				<!--AND obj.`details_id` = #{query.detailsId}-->
+			<!--</if>-->
+		<!--</where>-->
+		WHERE obj.`details_id` = #{detailsId}
+	</select>
+</mapper>

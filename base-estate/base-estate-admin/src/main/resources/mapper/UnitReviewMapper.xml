@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.UnitReviewMapper">
+
+    <resultMap id="unitReviewMap" type="com.aiforest.cloud.estate.common.entity.UnitReview">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="apartmentLayoutId" column="apartment_layout_id"/>
+        <result property="content" column="content"/>
+        <result property="guestbooks" column="guestbooks"/>
+        <result property="likes" column="likes"/>
+        <result property="views" column="views"/>
+        <result property="auditStatus" column="audit_status"/>
+		<result property="affiliationId" column="affiliation_id"/>
+    </resultMap>
+
+	<resultMap id="unitReviewMap2" extends="unitReviewMap" type="com.aiforest.cloud.estate.common.entity.UnitReview">
+		<collection property="listTopicReply" ofType="com.aiforest.cloud.estate.common.entity.TopicReply"
+					select="com.aiforest.cloud.estate.admin.mapper.TopicReplyMapper.selectList2"
+					column="{query.typesId=id,query.replyTypes=replyTypes}">
+		</collection>
+		<collection property="userInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById1"
+					column="{query.id=create_id}">
+		</collection>
+		<collection property="upvote" ofType="com.aiforest.cloud.estate.common.entity.Likes"
+					select="com.aiforest.cloud.estate.admin.mapper.LikesMapper.getByLikesId"
+					column="{query.likesId=id,query.likesType=replyTypes}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="unitReviewMap3" extends="unitReviewMap" type="com.aiforest.cloud.estate.common.entity.UnitReview">
+		<collection property="userInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById"
+					column="{id=create_id}">
+		</collection>
+		<collection property="listTopicReply" ofType="com.aiforest.cloud.estate.common.entity.TopicReply"
+					select="com.aiforest.cloud.estate.admin.mapper.TopicReplyMapper.getOfficialReplyById"
+					column="{query.typesId=id,query.replyTypes=replyTypes}">
+		</collection>
+	</resultMap>
+
+    <sql id="unitReviewSql">
+        unit_review.`id`,
+        unit_review.`tenant_id`,
+        unit_review.`del_flag`,
+        unit_review.`create_time`,
+        unit_review.`update_time`,
+        unit_review.`create_id`,
+        unit_review.`apartment_layout_id`,
+        unit_review.`content`,
+        unit_review.`guestbooks`,
+        unit_review.`likes`,
+        unit_review.`views`,
+        unit_review.`audit_status`,
+        unit_review.`affiliation_id`
+    </sql>
+
+	<select id="selectPage1" resultMap="unitReviewMap2">
+		SELECT
+		<include refid="unitReviewSql"/>,
+		3 as replyTypes
+		FROM unit_review unit_review
+		<where>
+			<if test="query.userId != null">
+				AND unit_review.`create_id` = #{query.userId}
+			</if>
+			<if test="query.createId != null and query.auditStatus == '1'.toString()">
+				AND unit_review.`audit_status` = '1'
+				OR (( unit_review.`audit_status` = '0' OR unit_review.`audit_status` = '2')
+				AND unit_review.`create_id` = #{query.createId})
+			</if>
+		</where>
+	</select>
+
+	<update id="addViews">
+		replyTypes reviews set views=views+1 where id=#{id}
+    </update>
+
+	<select id="selectPage2" resultMap="unitReviewMap3">
+		SELECT
+		<include refid="unitReviewSql"/>,
+		3 as replyTypes
+		FROM reviews reviews
+		<where>
+			<if test="query.createId != null">
+				AND reviews.`create_id` = #{query.createId}
+			</if>
+		</where>
+	</select>
+
+</mapper>

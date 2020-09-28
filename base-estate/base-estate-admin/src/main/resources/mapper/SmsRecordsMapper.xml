@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.SmsRecordsMapper">
+
+    <resultMap id="smsRecordsMap" type="com.aiforest.cloud.estate.common.entity.SmsRecords">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="senderId" column="sender_id"/>
+        <result property="receiverId" column="receiver_id"/>
+        <result property="details" column="details"/>
+        <result property="type" column="type"/>
+        <result property="status" column="status"/>
+		<result property="phone" column="phone"/>
+    </resultMap>
+
+
+	<resultMap id="smsRecordsMap2" extends="smsRecordsMap" type="com.aiforest.cloud.estate.common.entity.SmsRecords">
+		<collection property="senderInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById1"
+					column="{query.id=sender_id}">
+		</collection>
+		<collection property="receiverInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById1"
+					column="{query.id=receiver_id}">
+		</collection>
+	</resultMap>
+
+    <sql id="smsRecordsSql">
+        sms_records.`id`,
+        sms_records.`tenant_id`,
+        sms_records.`create_time`,
+        sms_records.`sender_id`,
+        sms_records.`receiver_id`,
+        sms_records.`details`,
+        sms_records.`type`,
+        sms_records.`status`,
+        sms_records.`phone`
+    </sql>
+
+	<select id="selectPage1" resultMap="smsRecordsMap2">
+		SELECT
+		<include refid="smsRecordsSql"/>
+		FROM sms_records sms_records
+		<where>
+			<if test="query.senderId != null">
+				AND sms_records.`sender_id` = #{query.senderId}
+			</if>
+			<if test="query.receiverId != null">
+				AND sms_records.`receiver_id` = #{query.receiverId}
+			</if>
+			<if test="query.type != null">
+				AND sms_records.`type` = #{query.type}
+			</if>
+			<if test="query.status != null">
+				AND sms_records.`status` = #{query.status}
+			</if>
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,29 @@
+server:
+  port: 6005
+
+spring:
+  application:
+    name: @artifactId@
+  #配置中心
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS-HOST:base-nacos}:${NACOS-PORT:8848}
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+  profiles:
+    active: dev
+  # Type definition error: [simple type, class com.google.protobuf.UnknownFieldSet];
+  # nested exception is com.fasterxml.jackson.databind.exc.InvalidDefinitionException:
+  # Direct self-reference leading to cycle
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+grpc:
+  client:
+    base-broker-admin:
+      negotiation-type: plaintext

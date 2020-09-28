@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.weixin.admin.mapper.WxMenuRuleMapper">
+
+	<resultMap id="wxMenuRuleMap" type="com.aiforest.cloud.weixin.common.entity.WxMenuRule">
+		<id property="id" column="id"/>
+		<result property="createId" column="create_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateId" column="update_id"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="tenantId" column="tenant_id"/>
+		<result property="appId" column="app_id"/>
+		<result property="name" column="name"/>
+		<result property="menuType" column="menu_type"/>
+		<result property="menuId" column="menu_id"/>
+		<result property="tagId" column="tag_id"/>
+		<result property="sex" column="sex"/>
+		<result property="clientPlatformType" column="client_platform_type"/>
+		<result property="country" column="country"/>
+		<result property="province" column="province"/>
+		<result property="city" column="city"/>
+		<result property="language" column="language"/>
+	</resultMap>
+
+	<sql id="wxMenuRuleSql">
+        wx_menu_rule.`id`,        wx_menu_rule.`create_id`,        wx_menu_rule.`create_time`,        wx_menu_rule.`update_id`,        wx_menu_rule.`update_time`,        wx_menu_rule.`del_flag`,        wx_menu_rule.`tenant_id`,        wx_menu_rule.`app_id`,        wx_menu_rule.`menu_type`,        wx_menu_rule.`menu_id`,        wx_menu_rule.`tag_id`,        wx_menu_rule.`sex`,        wx_menu_rule.`client_platform_type`,        wx_menu_rule.`country`,        wx_menu_rule.`province`,        wx_menu_rule.`city`,        wx_menu_rule.`language`    </sql>
+</mapper>

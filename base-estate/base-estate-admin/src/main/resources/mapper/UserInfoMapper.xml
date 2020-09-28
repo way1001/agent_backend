@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper">
+
+    <resultMap id="userInfoMap" type="com.aiforest.cloud.estate.common.entity.UserInfo">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="userCode" column="user_code"/>
+        <result property="appType" column="app_type"/>
+        <result property="appId" column="app_id"/>
+        <result property="phone" column="phone"/>
+        <result property="userGrade" column="user_grade"/>
+        <result property="userRole" column="user_role"/>
+        <result property="commissionCurrent" column="commission_current"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="realName" column="real_name"/>
+        <result property="sex" column="sex"/>
+        <result property="userType" column="user_type"/>
+        <result property="headimgUrl" column="headimg_url"/>
+        <result property="city" column="city"/>
+        <result property="country" column="country"/>
+        <result property="province" column="province"/>
+		<result property="invitee" column="invitee"/>
+		<result property="distribution" column="distribution"/>
+		<result property="userQrcode" column="user_qrcode"/>
+    </resultMap>
+
+	<resultMap id="userInfoMap2" extends="userInfoMap" type="com.aiforest.cloud.estate.common.entity.UserInfo">
+		<collection property="inviteeUser" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById"
+					column="{id=invitee}">
+		</collection>
+	</resultMap>
+
+    <sql id="userInfoSql">
+        user_info.`id`,
+        user_info.`tenant_id`,
+        user_info.`del_flag`,
+        user_info.`create_time`,
+        user_info.`update_time`,
+        user_info.`user_code`,
+        user_info.`app_type`,
+        user_info.`app_id`,
+        user_info.`phone`,
+        user_info.`user_grade`,
+        user_info.`user_role`,
+        user_info.`commission_current`,
+        user_info.`nick_name`,
+        user_info.`real_name`,
+        user_info.`sex`,
+        user_info.`user_type`,
+        user_info.`headimg_url`,
+        user_info.`city`,
+        user_info.`country`,
+        user_info.`province`,
+        user_info.`invitee`,
+        user_info.`distribution`,
+        user_info.`user_qrcode`
+    </sql>
+
+	<select id="selectPage1" resultMap="userInfoMap2">
+		SELECT
+		<include refid="userInfoSql"/>
+		FROM user_info user_info
+		<where>
+			<if test="query.id != null">
+				AND user_info.`id` = #{query.id}
+			</if>
+			<if test="query.phone != null">
+				AND user_info.`phone` = #{query.phone}
+			</if>
+			<if test="query.invitee != null">
+				AND user_info.`invitee` = #{query.invitee}
+			</if>
+			<if test="query.appId != null">
+				AND user_info.`app_id` = #{query.appId}
+			</if>
+			<if test="query.appType != null">
+				AND user_info.`app_type` = #{query.appType}
+			</if>
+			<if test="query.userType != null">
+				<if test="query.userType == '0'.toString ">
+					AND user_info.`user_type` = #{query.userType}
+				</if>
+				<if test="query.userType == '1'.toString or query.userType == '3'.toString">
+					AND user_info.`user_type` IN ('1', '3')
+				</if>
+			</if>
+		</where>
+	</select>
+
+
+
+	<select id="selectById1" resultMap="userInfoMap">
+		SELECT
+		<include refid="userInfoSql"/>
+		FROM user_info user_info
+		WHERE user_info.`id` = #{query.id}
+	</select>
+
+	<select id="getRandSalesman" resultMap="userInfoMap">
+		SELECT
+		<include refid="userInfoSql"/>
+		FROM user_info user_info
+		WHERE user_info.`user_type` = '1' AND user_info.`phone` is not null
+		ORDER BY RAND() LIMIT 0,1
+	</select>
+
+</mapper>

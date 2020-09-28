@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.broker.admin.mapper.UserInfoMapper">
+
+    <resultMap id="userInfoMap" type="com.aiforest.cloud.broker.common.entity.UserInfo">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="userCode" column="user_code"/>
+        <result property="phone" column="phone"/>
+        <result property="userGrade" column="user_grade"/>
+        <result property="userRole" column="user_role"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="realName" column="real_name"/>
+        <result property="sex" column="sex"/>
+        <result property="userStatus" column="user_status"/>
+        <result property="headimgUrl" column="headimg_url"/>
+        <result property="city" column="city"/>
+        <result property="country" column="country"/>
+        <result property="province" column="province"/>
+        <result property="entryTime" column="entry_time"/>
+        <result property="userQrcode" column="user_qrcode"/>
+        <result property="userSharecode" column="user_sharecode"/>
+        <result property="affiliated" column="affiliated"/>
+        <result property="memberGroup" column="member_group"/>
+		<result property="captcha" column="captcha"/>
+		<result property="sessionKey" column="session_key"/>
+	</resultMap>
+
+    <sql id="userInfoSql">
+        user_info.`id`,
+        user_info.`tenant_id`,
+        user_info.`del_flag`,
+        user_info.`create_time`,
+        user_info.`update_time`,
+        user_info.`user_code`,
+        user_info.`phone`,
+        user_info.`user_grade`,
+        user_info.`user_role`,
+        user_info.`nick_name`,
+        user_info.`real_name`,
+        user_info.`sex`,
+        user_info.`user_status`,
+        user_info.`headimg_url`,
+        user_info.`city`,
+        user_info.`country`,
+        user_info.`province`,
+        user_info.`entry_time`,
+        user_info.`user_qrcode`,
+        user_info.`user_sharecode`,
+        user_info.`affiliated`,
+        user_info.`member_group`,
+        user_info.`captcha`,
+        user_info.`session_key`
+    </sql>
+
+
+	<select id="selectList1" parameterType="String" resultMap="userInfoMap">
+		SELECT
+		<include refid="userInfoSql"/>
+		FROM user_info user_info
+		WHERE user_info.`affiliated` LIKE CONCAT('%',#{arg0},'%')
+        AND user_info.`tenant_id` = #{arg1}
+
+	</select>
+
+	<select id="selectById1" parameterType="String" resultMap="userInfoMap">
+		SELECT
+		user_info.`id`
+		FROM user_info user_info
+		WHERE user_info.`id` = #{arg0}
+		AND user_info.`tenant_id` = #{arg1}
+	</select>
+
+	<select id="selectIdByRole" resultMap="userInfoMap">
+		SELECT
+		<include refid="userInfoSql"/>
+		FROM user_info user_info
+		WHERE user_info.`user_role` = #{code}
+		LIMIT 0,1
+	</select>
+
+</mapper>

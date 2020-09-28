@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.mall.admin.mapper.GrouponInfoMapper">
+
+    <resultMap id="grouponInfoMap" type="com.aiforest.cloud.mall.common.entity.GrouponInfo">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="sort" column="sort"/>
+        <result property="enable" column="enable"/>
+        <result property="spuId" column="spu_id"/>
+        <result property="skuId" column="sku_id"/>
+        <result property="name" column="name"/>
+        <result property="grouponNum" column="groupon_num"/>
+        <result property="grouponPrice" column="groupon_price"/>
+		<result property="duration" column="duration"/>
+        <result property="validBeginTime" column="valid_begin_time"/>
+        <result property="validEndTime" column="valid_end_time"/>
+        <result property="launchNum" column="launch_num"/>
+        <result property="picUrl" column="pic_url"/>
+        <result property="grouponRule" column="groupon_rule"/>
+        <result property="shareTitle" column="share_title"/>
+    </resultMap>
+
+	<resultMap id="grouponInfoMap2" extends="grouponInfoMap" type="com.aiforest.cloud.mall.common.entity.GrouponInfo">
+		<collection property="goodsSpu" ofType="com.aiforest.cloud.mall.common.entity.GoodsSpu"
+					select="com.aiforest.cloud.mall.admin.mapper.GoodsSpuMapper.selectOneByShoppingCart"
+					column="{id=spu_id}">
+		</collection>
+		<collection property="goodsSku" ofType="com.aiforest.cloud.mall.common.entity.GoodsSku"
+					select="com.aiforest.cloud.mall.admin.mapper.GoodsSkuMapper.selectById"
+					column="{id=sku_id}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="grouponInfoMap3" extends="grouponInfoMap" type="com.aiforest.cloud.mall.common.entity.GrouponInfo">
+		<collection property="goodsSpu" ofType="com.aiforest.cloud.mall.common.entity.GoodsSpu"
+					select="com.aiforest.cloud.mall.admin.mapper.GoodsSpuMapper.selectById4"
+					column="{id=spu_id}">
+		</collection>
+		<collection property="goodsSku" ofType="com.aiforest.cloud.mall.common.entity.GoodsSku"
+					select="com.aiforest.cloud.mall.admin.mapper.GoodsSkuMapper.getGoodsSkuById"
+					column="{id=sku_id}">
+		</collection>
+	</resultMap>
+
+    <sql id="grouponInfoSql">
+        groupon_info.`id`,
+        groupon_info.`tenant_id`,
+        groupon_info.`del_flag`,
+        groupon_info.`create_time`,
+        groupon_info.`update_time`,
+        groupon_info.`create_id`,
+        groupon_info.`sort`,
+        groupon_info.`enable`,
+        groupon_info.`spu_id`,
+        groupon_info.`sku_id`,
+        groupon_info.`name`,
+        groupon_info.`groupon_num`,
+        groupon_info.`groupon_price`,
+        groupon_info.`duration`,
+        groupon_info.`valid_begin_time`,
+        groupon_info.`valid_end_time`,
+        groupon_info.`launch_num`,
+        groupon_info.`pic_url`,
+        groupon_info.`groupon_rule`,
+        groupon_info.`share_title`
+    </sql>
+
+	<select id="selectPage2" resultMap="grouponInfoMap2">
+		SELECT
+		<include refid="grouponInfoSql"/>
+		FROM groupon_info groupon_info
+		<where>
+			AND groupon_info.`enable` = '1'
+			AND groupon_info.`valid_end_time` > now()
+			AND now() > groupon_info.`valid_begin_time`
+		</where>
+	</select>
+
+	<select id="selectById2" resultMap="grouponInfoMap3">
+		SELECT
+		<include refid="grouponInfoSql"/>
+		FROM groupon_info groupon_info
+		WHERE groupon_info.`id` = #{id}
+	</select>
+</mapper>

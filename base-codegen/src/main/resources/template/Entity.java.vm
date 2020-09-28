@@ -1,0 +1,52 @@
+/**
+ * Copyright (C) 2018-2019
+ * All rights reserved, Designed By www.aiforest.com
+ * 注意：
+ * 本软件为www.aiforest.com开发研制，未经购买不得使用
+ * 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+ * 一经发现盗用、分享等行为，将追究法律责任，后果自负
+ */
+package ${package}.${moduleName}.entity;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import javax.validation.constraints.NotNull;
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+import java.time.LocalDateTime;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModel;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+@TableName("${tableName}")
+@EqualsAndHashCode(callSuper = true)
+@ApiModel(description = "${comments}")
+public class ${className} extends Model<${className}> {
+    private static final long serialVersionUID=1L;
+
+#foreach ($column in $columns)
+    /**
+     * $column.comments
+     */
+#if($column.columnName == $pk.columnName)
+    @TableId(type = IdType.ASSIGN_ID)
+#end
+#if($column.isNullable.equals('NO'))
+    @NotNull(message = "$column.comments不能为空")
+#end
+    @ApiModelProperty(value = "$column.comments")
+    private $column.attrType $column.lowerAttrName;
+#end
+
+}

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.LikesMapper">
+
+    <resultMap id="likesMap" type="com.aiforest.cloud.estate.common.entity.Likes">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="likesId" column="likes_id"/>
+        <result property="likesType" column="likes_type"/>
+        <result property="likeStatus" column="like_status"/>
+		<result property="affiliationId" column="affiliation_id"/>
+    </resultMap>
+
+	<resultMap id="likesMap2" extends="likesMap" type="com.aiforest.cloud.estate.common.entity.Likes">
+		<collection property="userInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById1"
+					column="{query.id=user_id}">
+		</collection>
+	</resultMap>
+
+    <sql id="likesSql">
+        likes.`id`,
+        likes.`tenant_id`,
+        likes.`user_id`,
+        likes.`likes_id`,
+        likes.`likes_type`,
+        likes.`like_status`,
+        likes.`affiliation_id`
+    </sql>
+
+	<select id="getByLikesId" resultMap="likesMap2">
+		SELECT
+		<include refid="likesSql"/>
+		FROM likes likes
+		<where>
+		<if test="query.likesId != null">
+		AND likes.`likes_id` = #{query.likesId}
+		</if>
+		<if test="query.likesType != null">
+		AND likes.`likes_type` = #{query.likesType}
+		</if>
+		<if test="query.likeStatus == null">
+		AND likes.`like_status` = '0'
+		</if>
+		</where>
+	</select>
+
+
+	<select id="selectList1" resultMap="likesMap2">
+		SELECT
+		<include refid="likesSql"/>
+		FROM likes likes
+		<where>
+			<if test="query.likesId != null">
+				AND likes.`likes_id` = #{query.likesId}
+			</if>
+			<if test="query.likesType != null">
+				AND likes.`likes_type` = #{query.likesType}
+			</if>
+			<if test="query.userId != null">
+				AND likes.`user_id` = #{query.userId}
+			</if>
+			<if test="query.likeStatus == null">
+				AND likes.`like_status` = '0'
+			</if>
+		</where>
+	</select>
+
+</mapper>

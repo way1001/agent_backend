@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.aiforest.cloud.common.email.config.EmailConfiguration,\
+  com.aiforest.cloud.common.email.config.EmailConfigProperties,\
+  com.aiforest.cloud.common.email.util.EmailUtils

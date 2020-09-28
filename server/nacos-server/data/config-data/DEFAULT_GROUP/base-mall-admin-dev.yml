@@ -1,0 +1,73 @@
+## spring security 配置
+security:
+  oauth2:
+    client:
+      client-id: weixin
+      client-secret: weixin
+      scope: server
+      # 无需token访问的url
+      release-urls:
+        - /actuator/**
+        - /v2/api-docs
+        - /api/**
+# 数据源配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: root
+      url: jdbc:mysql://base-mysql:3306/base_mall?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true&allowPublicKeyRetrieval=true
+  resources:
+    static-locations: classpath:/static/,classpath:/views/
+# Logger Config sql日志
+logging:
+  level:
+    com.aiforest.cloud.mall.admin.mapper: debug    
+# 租户表维护
+base:
+  tenant:
+    column: tenant_id
+    tables:
+      - goods_category
+      - goods_spu
+      - goods_spu_spec
+      - goods_sku
+      - goods_sku_spec_value
+      - goods_spec
+      - goods_spec_value
+      - goods_appraises
+      - shopping_cart
+      - order_info
+      - order_item
+      - order_logistics
+      - order_logistics_detail
+      - user_address
+      - user_collect
+      - material
+      - material_group
+      - notice
+      - notice_item
+      - order_refunds
+      - user_info
+      - points_record
+      - points_config
+      - coupon_info
+      - coupon_goods
+      - coupon_user
+      - freight_templat
+      - bargain_info
+      - bargain_user
+      - bargain_cut
+      - delivery_place
+      - ensure
+      - ensure_goods
+      - groupon_info
+      - groupon_user
+  #商城相关配置
+  mall:
+    #支付、物流回调地址域名，注：快递100不支持https回调
+    notify-host: http://test.aiforest.com
+    #快递100授权key
+    logistics-key: xxxxxxxxxxx

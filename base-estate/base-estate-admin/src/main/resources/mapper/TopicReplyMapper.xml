@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.TopicReplyMapper">
+
+    <resultMap id="topicReplyMap" type="com.aiforest.cloud.estate.common.entity.TopicReply">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="typesId" column="types_id"/>
+        <result property="replyTypes" column="reply_types"/>
+        <result property="replyClass" column="reply_class"/>
+        <result property="likes" column="likes"/>
+        <result property="details" column="details"/>
+        <result property="views" column="views"/>
+        <result property="sort" column="sort"/>
+        <result property="auditStatus" column="audit_status"/>
+		<result property="affiliationId" column="affiliation_id"/>
+    </resultMap>
+
+	<resultMap id="topicReplyMap2" extends="topicReplyMap" type="com.aiforest.cloud.estate.common.entity.TopicReply">
+		<collection property="upvote" ofType="com.aiforest.cloud.estate.common.entity.Likes"
+					select="com.aiforest.cloud.estate.admin.mapper.LikesMapper.getByLikesId"
+					column="{query.likesId=id,query.likesType=likesReplyTypes}">
+		</collection>
+		<collection property="userInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById1"
+					column="{query.id=create_id}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="topicReplyMap3" extends="topicReplyMap" type="com.aiforest.cloud.estate.common.entity.TopicReply">
+		<collection property="userInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById1"
+					column="{query.id=create_id}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="topicReplyMap4" extends="topicReplyMap" type="com.aiforest.cloud.estate.common.entity.TopicReply">
+		<collection property="awesomeShooting" ofType="com.aiforest.cloud.estate.common.entity.AwesomeShooting"
+					select="com.aiforest.cloud.estate.admin.mapper.AwesomeShootingMapper.selectById"
+					column="{id=types_id}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="topicReplyMap5" extends="topicReplyMap" type="com.aiforest.cloud.estate.common.entity.TopicReply">
+		<collection property="reviews" ofType="com.aiforest.cloud.estate.common.entity.Reviews"
+					select="com.aiforest.cloud.estate.admin.mapper.ReviewsMapper.selectById"
+					column="{id=types_id}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="topicReplyMap6" extends="topicReplyMap" type="com.aiforest.cloud.estate.common.entity.TopicReply">
+		<collection property="apartmentLayout" ofType="com.aiforest.cloud.estate.common.entity.ApartmentLayout"
+					select="com.aiforest.cloud.estate.admin.mapper.ApartmentLayoutMapper.selectById"
+					column="{id=types_id}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="topicReplyMap7" extends="topicReplyMap" type="com.aiforest.cloud.estate.common.entity.TopicReply">
+		<collection property="askQuestions" ofType="com.aiforest.cloud.estate.common.entity.AskQuestions"
+					select="com.aiforest.cloud.estate.admin.mapper.AskQuestionsMapper.selectById"
+					column="{id=types_id}">
+		</collection>
+	</resultMap>
+
+
+	<!--<resultMap id="topicReplyMap3" extends="topicReplyMap2" type="com.aiforest.cloud.estate.common.entity.TopicReply">-->
+		<!--<collection property="listTopicReply" ofType="com.aiforest.cloud.estate.common.entity.TopicReply"-->
+					<!--select="com.aiforest.cloud.estate.admin.mapper.TopicReplyMapper.selectList2"-->
+					<!--column="{query.typesId=id,query.replyTypes=quadraticReplyTypes}">-->
+		<!--</collection>-->
+	<!--</resultMap>-->
+
+    <sql id="topicReplySql">
+        topic_reply.`id`,
+        topic_reply.`tenant_id`,
+        topic_reply.`del_flag`,
+        topic_reply.`create_time`,
+        topic_reply.`update_time`,
+        topic_reply.`create_id`,
+        topic_reply.`types_id`,
+        topic_reply.`reply_types`,
+        topic_reply.`reply_class`,
+        topic_reply.`likes`,
+        topic_reply.`details`,
+        topic_reply.`views`,
+        topic_reply.`sort`,
+        topic_reply.`audit_status`,
+        topic_reply.`affiliation_id`
+     </sql>
+
+	<select id="selectPage1" resultMap="topicReplyMap3">
+		SELECT
+		<include refid="topicReplySql"/>
+		FROM topic_reply topic_reply
+		<where>
+			<if test="query.auditStatus != null">
+				AND topic_reply.`audit_status` = #{query.auditStatus}
+			</if>
+			<if test="query.replyTypes != null">
+				AND topic_reply.`reply_types` = #{query.replyTypes}
+			</if>
+			<if test="query.id != null">
+				AND topic_reply.`id` = #{query.id}
+			</if>
+			<if test="query.affiliationId != null">
+				AND topic_reply.`affiliation_id` = #{query.affiliationId}
+			</if>
+		</where>
+	</select>
+
+
+	<select id="selectList2" resultMap="topicReplyMap2">
+		SELECT
+		<include refid="topicReplySql"/>,
+		5 as likesReplyTypes
+		FROM topic_reply topic_reply
+		<where>
+			<if test="query.typesId != null">
+				AND topic_reply.`types_id` = #{query.typesId}
+			</if>
+			<if test="query.replyTypes != null">
+				AND topic_reply.`reply_types` = #{query.replyTypes}
+			</if>
+		</where>
+	</select>
+
+	<!--<select id="selectList3" resultMap="topicReplyMap3">-->
+		<!--SELECT-->
+		<!--<include refid="topicReplySql"/>-->
+		<!--5 as quadraticReplyTypes-->
+		<!--FROM topic_reply topic_reply-->
+		<!--<where>-->
+			<!--<if test="query.typesId != null">-->
+				<!--AND topic_reply.`types_id` = #{query.typesId}-->
+			<!--</if>-->
+			<!--<if test="query.replyTypes != null">-->
+				<!--AND topic_reply.`reply_types` = #{query.replyTypes}-->
+			<!--</if>-->
+		<!--</where>-->
+		<!--ORDER BY topic_reply.`likes` DESC-->
+	<!--</select>-->
+
+
+
+	<select id="getOfficialReplyById" resultMap="topicReplyMap">
+		SELECT
+		<include refid="topicReplySql"/>
+		FROM topic_reply topic_reply
+		<where>
+			<if test="query.replyClass == null">
+				AND topic_reply.`reply_class` = '2'
+			</if>
+			<if test="query.typesId != null">
+				AND topic_reply.`types_id` = #{query.typesId}
+			</if>
+			<if test="query.replyTypes != null">
+				AND topic_reply.`reply_types` = #{query.replyTypes}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectPageAS" resultMap="topicReplyMap4">
+		SELECT
+		<include refid="topicReplySql"/>
+		FROM topic_reply topic_reply
+		<where>
+			<if test="query.createId != null">
+				AND topic_reply.`create_id` = #{query.createId}
+			</if>
+			AND topic_reply.`reply_types` = '1'
+			<if test="query.affiliationId != null">
+				AND topic_reply.`affiliation_id` = #{query.affiliationId}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectPageRv" resultMap="topicReplyMap5">
+		SELECT
+		<include refid="topicReplySql"/>
+		FROM topic_reply topic_reply
+		<where>
+			<if test="query.createId != null">
+				AND topic_reply.`create_id` = #{query.createId}
+			</if>
+			AND topic_reply.`reply_types` = '2'
+			<if test="query.affiliationId != null">
+				AND topic_reply.`affiliation_id` = #{query.affiliationId}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectPageAL" resultMap="topicReplyMap6">
+		SELECT
+		<include refid="topicReplySql"/>
+		FROM topic_reply topic_reply
+		<where>
+			<if test="query.createId != null">
+				AND topic_reply.`create_id` = #{query.createId}
+			</if>
+			AND topic_reply.`reply_types` = '3'
+			<if test="query.affiliationId != null">
+				AND topic_reply.`affiliation_id` = #{query.affiliationId}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectPageAQ" resultMap="topicReplyMap7">
+		SELECT
+		<include refid="topicReplySql"/>
+		FROM topic_reply topic_reply
+		<where>
+			<if test="query.createId != null">
+				AND topic_reply.`create_id` = #{query.createId}
+			</if>
+			AND topic_reply.`reply_types` = '4'
+			<if test="query.affiliationId != null">
+				AND topic_reply.`affiliation_id` = #{query.affiliationId}
+			</if>
+		</where>
+	</select>
+
+
+
+</mapper>

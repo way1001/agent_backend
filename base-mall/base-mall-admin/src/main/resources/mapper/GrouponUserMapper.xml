@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.mall.admin.mapper.GrouponUserMapper">
+
+    <resultMap id="grouponUserMap" type="com.aiforest.cloud.mall.common.entity.GrouponUser">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="grouponId" column="groupon_id"/>
+		<result property="grouponNum" column="groupon_num"/>
+		<result property="grouponPrice" column="groupon_price"/>
+        <result property="groupId" column="group_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="headimgUrl" column="headimg_url"/>
+        <result property="spuId" column="spu_id"/>
+        <result property="skuId" column="sku_id"/>
+        <result property="isLeader" column="is_leader"/>
+        <result property="validBeginTime" column="valid_begin_time"/>
+        <result property="validEndTime" column="valid_end_time"/>
+        <result property="orderId" column="order_id"/>
+		<result property="status" column="status"/>
+    </resultMap>
+
+	<resultMap id="grouponUserMap1" extends="grouponUserMap" type="com.aiforest.cloud.mall.common.entity.GrouponUser">
+		<collection property="havgrouponNum" ofType="java.lang.Integer"
+					select="com.aiforest.cloud.mall.admin.mapper.GrouponUserMapper.selectCountGrouponing"
+					column="{groupId=id}">
+		</collection>
+		<collection property="listGrouponUser" ofType="com.aiforest.cloud.mall.common.entity.GrouponUser"
+					select="com.aiforest.cloud.mall.admin.mapper.GrouponUserMapper.selectPageGrouponing"
+					column="{query.groupId=id}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="grouponUserMap2" extends="grouponUserMap" type="com.aiforest.cloud.mall.common.entity.GrouponUser">
+		<collection property="grouponInfo" ofType="com.aiforest.cloud.mall.common.entity.GrouponInfo"
+					select="com.aiforest.cloud.mall.admin.mapper.GrouponInfoMapper.selectById2"
+					column="{id=groupon_id}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="grouponUserMap3" extends="grouponUserMap" type="com.aiforest.cloud.mall.common.entity.GrouponUser">
+		<collection property="havgrouponNum" ofType="java.lang.Integer"
+					select="com.aiforest.cloud.mall.admin.mapper.GrouponUserMapper.selectCountGrouponing"
+					column="{groupId=id}">
+		</collection>
+	</resultMap>
+
+    <sql id="grouponUserSql">
+        groupon_user.`id`,
+        groupon_user.`tenant_id`,
+        groupon_user.`del_flag`,
+        groupon_user.`create_time`,
+        groupon_user.`update_time`,
+        groupon_user.`create_id`,
+        groupon_user.`groupon_id`,
+        groupon_user.`groupon_num`,
+        groupon_user.`groupon_price`,
+        groupon_user.`group_id`,
+        groupon_user.`user_id`,
+        groupon_user.`nick_name`,
+        groupon_user.`headimg_url`,
+        groupon_user.`spu_id`,
+        groupon_user.`sku_id`,
+        groupon_user.`is_leader`,
+        groupon_user.`valid_begin_time`,
+        groupon_user.`valid_end_time`,
+        groupon_user.`order_id`,
+        groupon_user.`status`
+    </sql>
+
+	<select id="selectPage1" resultMap="grouponUserMap1">
+		SELECT
+		<include refid="grouponUserSql"/>
+		FROM groupon_user groupon_user
+		<where>
+			<if test="query.isLeader != null">
+				AND groupon_user.`is_leader` = #{query.isLeader}
+			</if>
+			<if test="query.userId != null">
+				AND groupon_user.`user_id` = #{query.userId}
+			</if>
+			<if test="query.groupId != null">
+				AND groupon_user.`group_id` = #{query.groupId}
+			</if>
+			<if test="query.grouponId != null">
+				AND groupon_user.`groupon_id` = #{query.grouponId}
+			</if>
+			<if test='query.status == "0"'>
+				AND groupon_user.`status` = '0'
+				AND groupon_user.`valid_end_time` > now()
+			</if>
+			<if test='query.status == "1"'>
+				AND groupon_user.`status` = '1'
+			</if>
+			<if test='query.status == "2"'>
+				AND groupon_user.`status` = '0'
+				AND now() > groupon_user.`valid_end_time`
+			</if>
+		</where>
+	</select>
+
+	<select id="selectPage2" resultMap="grouponUserMap2">
+		SELECT
+		<include refid="grouponUserSql"/>
+		FROM groupon_user groupon_user
+		<where>
+			<if test="query.isLeader != null">
+				AND groupon_user.`is_leader` = #{query.isLeader}
+			</if>
+			<if test="query.userId != null">
+				AND groupon_user.`user_id` = #{query.userId}
+			</if>
+			<if test="query.groupId != null">
+				AND groupon_user.`group_id` = #{query.groupId}
+			</if>
+			<if test="query.grouponId != null">
+				AND groupon_user.`groupon_id` = #{query.grouponId}
+			</if>
+			<if test='query.status == "0"'>
+				AND groupon_user.`status` = '0'
+				AND groupon_user.`valid_end_time` > now()
+			</if>
+			<if test='query.status == "1"'>
+				AND groupon_user.`status` = '1'
+			</if>
+			<if test='query.status == "2"'>
+				AND groupon_user.`status` = '0'
+				AND now() > groupon_user.`valid_end_time`
+			</if>
+		</where>
+	</select>
+
+	<!-- 拼团中的列表查询  -->
+	<select id="selectPageGrouponing" resultMap="grouponUserMap3">
+		SELECT
+		<include refid="grouponUserSql"/>
+		FROM groupon_user groupon_user
+		<where>
+			<if test="query.isLeader != null">
+				AND groupon_user.`is_leader` = #{query.isLeader}
+			</if>
+			<if test="query.userId != null">
+				AND groupon_user.`user_id` = #{query.userId}
+			</if>
+			<if test="query.groupId != null">
+				AND groupon_user.`group_id` = #{query.groupId}
+			</if>
+			<if test="query.grouponId != null">
+				AND groupon_user.`groupon_id` = #{query.grouponId}
+			</if>
+			<if test='query.status == "0"'>
+				AND groupon_user.`status` = '0'
+				AND groupon_user.`valid_end_time` > now()
+			</if>
+			<if test='query.status == "1"'>
+				AND groupon_user.`status` = '1'
+			</if>
+			<if test='query.status == "2"'>
+				AND groupon_user.`status` = '0'
+				AND now() > groupon_user.`valid_end_time`
+			</if>
+		</where>
+	</select>
+
+	<select id="selectCountGrouponing" resultType="java.lang.Integer">
+		SELECT
+		COUNT(1)
+		FROM groupon_user groupon_user
+		WHERE groupon_user.`group_id` = #{groupId}
+	</select>
+</mapper>

@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+
+package com.aiforest.cloud.common.grpc.api;
+
+message ReferralsGetRequest {
+    string id = 1;
+}
+
+message ReferralsGetResponse {
+   Referrals referrals = 1;
+}
+
+message ReferralsDelRequest {
+    string id = 1;
+}
+
+message ReferralsDelResponse {
+   string succeed = 1;
+}
+
+message ReferralsPageRequest {
+    int32 currentPage = 1;
+    int32 pageSize = 2;
+    string brokerId = 3;
+    string affiliationId = 4;
+    string tenantId = 5;
+    string currentHandler = 6;
+    string customerName = 7;
+    string phone = 8;
+}
+
+message ReferralsPageResponse {
+    int32 total = 1;
+    int32 currentPage = 2;
+    int32 pageSize = 3;
+    repeated Referrals referrals = 4;
+}
+
+message Referrals {
+   string id = 1;
+   string affiliationId = 2;
+   google.protobuf.Timestamp createTime = 3;
+   string phone = 4;
+   string customerName = 5;
+   string gender = 6;
+   string description = 7;
+   string currentHandler = 8;
+   string staffId = 9;
+   string instanceId = 10;
+   string workflowStatus = 11;
+}
+
+service ReferralsService {
+    rpc get(ReferralsGetRequest) returns (ReferralsGetResponse);
+    rpc del(ReferralsDelRequest) returns (ReferralsDelResponse);
+    rpc page(ReferralsPageRequest) returns (ReferralsPageResponse);
+}

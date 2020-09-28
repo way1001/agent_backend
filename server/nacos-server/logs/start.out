@@ -1,0 +1,149 @@
+/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/bin/java  -Xms512m -Xmx512m -Xmn256m -Dnacos.standalone=true -Dnacos.member.list= -Djava.ext.dirs=/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre/lib/ext:/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/lib/ext -Xloggc:/Users/way/Desktop/estate_agent/agent_backend/server/nacos-server/logs/nacos_gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M -Dloader.path=/Users/way/Desktop/estate_agent/agent_backend/server/nacos-server/plugins/health,/Users/way/Desktop/estate_agent/agent_backend/server/nacos-server/plugins/cmdb -Dnacos.home=/Users/way/Desktop/estate_agent/agent_backend/server/nacos-server -jar /Users/way/Desktop/estate_agent/agent_backend/server/nacos-server/target/nacos-server.jar  --spring.config.location=classpath:/,classpath:/config/,file:./,file:./config/,file:/Users/way/Desktop/estate_agent/agent_backend/server/nacos-server/conf/ --logging.config=/Users/way/Desktop/estate_agent/agent_backend/server/nacos-server/conf/nacos-logback.xml --server.max-http-header-size=524288
+
+         ,--.
+       ,--.'|
+   ,--,:  : |                                           Nacos 1.3.1
+,`--.'`|  ' :                       ,---.               Running in stand alone mode, All function modules
+|   :  :  | |                      '   ,'\   .--.--.    Port: 8848
+:   |   \ | :  ,--.--.     ,---.  /   /   | /  /    '   Pid: 63218
+|   : '  '; | /       \   /     \.   ; ,. :|  :  /`./   Console: http://192.168.20.210:8848/nacos/index.html
+'   ' ;.    ;.--.  .-. | /    / ''   | |: :|  :  ;_
+|   | | \   | \__\/: . ..    ' / '   | .; : \  \    `.      https://nacos.io
+'   : |  ; .' ," .--.; |'   ; :__|   :    |  `----.   \
+|   | '`--'  /  /  ,.  |'   | '.'|\   \  /  /  /`--'  /
+'   : |     ;  :   .'   \   :    : `----'  '--'.     /
+;   |.'     |  ,     .-./\   \  /            `--'---'
+'---'        `--`---'     `----'
+
+2020-08-13 11:21:29,181 INFO Bean 'org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration' of type [org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration$$EnhancerBySpringCGLIB$$1d4e4665] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+
+2020-08-13 11:21:29,329 INFO Bean 'objectPostProcessor' of type [org.springframework.security.config.annotation.configuration.AutowireBeanFactoryObjectPostProcessor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+
+2020-08-13 11:21:29,335 INFO Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@45a4b042' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+
+2020-08-13 11:21:29,341 INFO Bean 'org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration' of type [org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration$$EnhancerBySpringCGLIB$$4222e917] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+
+2020-08-13 11:21:29,351 INFO Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+
+2020-08-13 11:21:30,194 INFO Tomcat initialized with port(s): 8848 (http)
+
+2020-08-13 11:21:30,430 INFO Root WebApplicationContext: initialization completed in 6502 ms
+
+2020-08-13 11:21:34,631 INFO Initializing ExecutorService 'applicationTaskExecutor'
+
+2020-08-13 11:21:35,030 INFO Adding welcome page: class path resource [static/index.html]
+
+2020-08-13 11:21:35,774 INFO Creating filter chain: Ant [pattern='/**'], []
+
+2020-08-13 11:21:35,874 INFO Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@455351c4, org.springframework.security.web.context.SecurityContextPersistenceFilter@552518c3, org.springframework.security.web.header.HeaderWriterFilter@2f2bf0e2, org.springframework.security.web.csrf.CsrfFilter@1b11ef33, org.springframework.security.web.authentication.logout.LogoutFilter@5e77f0f4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@59aa20b3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1b28f282, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@29876704, org.springframework.security.web.session.SessionManagementFilter@21ec5d87, org.springframework.security.web.access.ExceptionTranslationFilter@6cea706c]
+
+2020-08-13 11:21:36,057 INFO Exposing 2 endpoint(s) beneath base path '/actuator'
+
+2020-08-13 11:21:36,108 INFO Initializing ExecutorService 'taskScheduler'
+
+2020-08-13 11:21:36,467 ERROR Failed to start component [Connector[HTTP/1.1-8848]]
+
+org.apache.catalina.LifecycleException: Protocol handler start failed
+	at org.apache.catalina.connector.Connector.startInternal(Connector.java:1001)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.StandardService.addConnector(StandardService.java:225)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.addPreviouslyRemovedConnectors(TomcatWebServer.java:259)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start(TomcatWebServer.java:197)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.startWebServer(ServletWebServerApplicationContext.java:311)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.finishRefresh(ServletWebServerApplicationContext.java:164)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:142)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.alibaba.nacos.Nacos.main(Nacos.java:35)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:49)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:109)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:58)
+	at org.springframework.boot.loader.PropertiesLauncher.main(PropertiesLauncher.java:466)
+Caused by: java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:437)
+	at sun.nio.ch.Net.bind(Net.java:429)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.apache.tomcat.util.net.NioEndpoint.initServerSocket(NioEndpoint.java:236)
+	at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:210)
+	at org.apache.tomcat.util.net.AbstractEndpoint.bindWithCleanup(AbstractEndpoint.java:1067)
+	at org.apache.tomcat.util.net.AbstractEndpoint.start(AbstractEndpoint.java:1149)
+	at org.apache.coyote.AbstractProtocol.start(AbstractProtocol.java:561)
+	at org.apache.catalina.connector.Connector.startInternal(Connector.java:998)
+	... 22 common frames omitted
+2020-08-13 11:21:36,573 INFO Nacos Log files: /Users/way/Desktop/estate_agent/agent_backend/server/nacos-server/logs
+
+2020-08-13 11:21:36,579 INFO Nacos Log files: /Users/way/Desktop/estate_agent/agent_backend/server/nacos-server/conf
+
+2020-08-13 11:21:36,580 INFO Nacos Log files: /Users/way/Desktop/estate_agent/agent_backend/server/nacos-server/data
+
+2020-08-13 11:21:36,580 ERROR Startup errors : {}
+
+org.springframework.boot.web.embedded.tomcat.ConnectorStartFailedException: Connector configured to listen on port 8848 failed to start
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.checkConnectorHasStarted(TomcatWebServer.java:232)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.checkThatConnectorsHaveStarted(TomcatWebServer.java:224)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start(TomcatWebServer.java:202)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.startWebServer(ServletWebServerApplicationContext.java:311)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.finishRefresh(ServletWebServerApplicationContext.java:164)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:142)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.alibaba.nacos.Nacos.main(Nacos.java:35)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:49)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:109)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:58)
+	at org.springframework.boot.loader.PropertiesLauncher.main(PropertiesLauncher.java:466)
+2020-08-13 11:21:59,573 WARN [WatchFileCenter] start close
+
+2020-08-13 11:21:59,574 WARN [WatchFileCenter] already closed
+
+2020-08-13 11:21:59,574 WARN [NotifyCenter] Start destroying Publisher
+
+2020-08-13 11:21:59,575 WARN [NotifyCenter] Destruction of the end
+
+2020-08-13 11:21:59,577 INFO Shutting down ExecutorService 'taskScheduler'
+
+2020-08-13 11:21:59,579 INFO Shutting down ExecutorService 'applicationTaskExecutor'
+
+2020-08-13 11:21:59,586 ERROR Nacos failed to start, please see /Users/way/Desktop/estate_agent/agent_backend/server/nacos-server/logs/nacos.log for more details.
+
+2020-08-13 11:21:59,588 INFO 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+
+2020-08-13 11:21:59,591 ERROR 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The Tomcat connector configured to listen on port 8848 failed to start. The port may already be in use or the connector may be misconfigured.
+
+Action:
+
+Verify the connector's configuration, identify and stop any process that's listening on port 8848, or configure this application to listen on another port.
+
+
+2020-09-02 08:02:00,614 WARN [ThreadPoolManager] Start destroying ThreadPool
+
+2020-09-02 08:02:00,620 WARN [ThreadPoolManager] Destruction of the end
+

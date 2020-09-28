@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.ShareInfoMapper">
+
+    <resultMap id="shareInfoMap" type="com.aiforest.cloud.estate.common.entity.ShareInfo">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="background" column="background"/>
+        <result property="content" column="content"/>
+		<result property="fontColor" column="font_color"/>
+		<result property="affiliationId" column="affiliation_id"/>
+	</resultMap>
+
+    <sql id="shareInfoSql">
+        share_info.`id`,
+        share_info.`tenant_id`,
+        share_info.`del_flag`,
+        share_info.`create_time`,
+        share_info.`update_time`,
+        share_info.`create_id`,
+        share_info.`background`,
+        share_info.`content`,
+        share_info.`font_color`,
+        share_info.`affiliation_id`
+    </sql>
+
+</mapper>

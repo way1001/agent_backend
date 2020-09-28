@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.AttentionMapper">
+
+    <resultMap id="attentionMap" type="com.aiforest.cloud.estate.common.entity.Attention">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="attentionId" column="attention_id"/>
+        <result property="attentionType" column="attention_type"/>
+        <result property="attentionStatus" column="attention_status"/>
+		<result property="affiliationId" column="affiliation_id"/>
+	</resultMap>
+
+
+	<resultMap id="attentionMap2" extends="attentionMap" type="com.aiforest.cloud.estate.common.entity.Attention">
+		<collection property="apartmentLayout" ofType="com.aiforest.cloud.estate.common.entity.ApartmentLayout"
+					select="com.aiforest.cloud.estate.admin.mapper.ApartmentLayoutMapper.selectById"
+					column="{id=attention_id}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="attentionMap3" extends="attentionMap" type="com.aiforest.cloud.estate.common.entity.Attention">
+		<collection property="userInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById1"
+					column="{query.id=user_id}">
+		</collection>
+	</resultMap>
+
+    <sql id="attentionSql">
+        attention.`id`,
+        attention.`tenant_id`,
+        attention.`create_time`,
+        attention.`update_time`,
+        attention.`user_id`,
+        attention.`attention_id`,
+        attention.`attention_type`,
+        attention.`attention_status`,
+        attention.`affiliation_id`
+    </sql>
+
+
+	<select id="selectPage1" resultMap="attentionMap3">
+		SELECT
+		<include refid="attentionSql"/>
+		FROM attention attention
+		<where>
+			<if test="query.attentionType != null">
+				<if test="query.attentionType != '6'.toString()">
+					AND (attention.`attention_type` = '4'
+					OR attention.`attention_type` = '5')
+				</if>
+				<if test="query.attentionType == '6'.toString()">
+					AND attention.`attention_type` = '6'
+				</if>
+			</if>
+			<if test="query.attentionType == null">
+					AND (attention.`attention_type` = '4'
+					OR attention.`attention_type` = '5')
+			</if>
+			<if test="query.attentionStatus == null">
+				AND attention.`attention_status` = '0'
+			</if>
+		</where>
+	</select>
+
+
+	<select id="selectList1" resultMap="attentionMap">
+		SELECT
+		<include refid="attentionSql"/>
+		FROM attention attention
+		<where>
+			<if test="query.userId != null">
+				AND attention.`user_id` = #{query.userId}
+			</if>
+			<if test="query.id != null">
+				AND attention.`id` = #{query.id}
+			</if>
+			<if test="query.attentionType != null">
+				<if test="query.attentionType != '6'.toString()">
+					AND (attention.`attention_type` = '4'
+					OR attention.`attention_type` = '5')
+				</if>
+				<if test="query.attentionType == '6'.toString()">
+					AND attention.`attention_type` = '6'
+				</if>
+            </if>
+			<if test="query.attentionStatus == null">
+				AND attention.`attention_status` = '0'
+			</if>
+			<if test="query.affiliationId != null">
+				AND attention.`affiliation_id` = #{query.affiliationId}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectList2" resultMap="attentionMap2">
+		SELECT
+		<include refid="attentionSql"/>
+		FROM attention attention
+		<where>
+			<if test="query.userId != null">
+				AND attention.`user_id` = #{query.userId}
+			</if>
+			<if test="query.attentionStatus == null">
+				AND attention.`attention_type` = '6' AND attention.`attention_status` = '0'
+			</if>
+			<if test="query.affiliationId != null">
+				AND attention.`affiliation_id` = #{query.affiliationId}
+			</if>
+		</where>
+	</select>
+
+</mapper>

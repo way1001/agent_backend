@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.codegen.mapper.GenTableMapper">
+
+    <resultMap id="genTableMap" type="com.aiforest.cloud.codegen.entity.GenTable">
+        <id property="id" column="id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="tableName" column="table_name"/>
+        <result property="tableComment" column="table_comment"/>
+        <result property="packageName" column="package_name"/>
+        <result property="moduleName" column="module_name"/>
+        <result property="author" column="author"/>
+        <result property="tablePrefix" column="table_prefix"/>
+    </resultMap>
+
+    <sql id="genTableSql">
+        gen_table.`id`,        gen_table.`del_flag`,        gen_table.`create_time`,        gen_table.`update_time`,        gen_table.`create_id`,        gen_table.`table_name`,        gen_table.`table_comment`,        gen_table.`package_name`,        gen_table.`module_name`,        gen_table.`author`,        gen_table.`table_prefix`    </sql>
+</mapper>

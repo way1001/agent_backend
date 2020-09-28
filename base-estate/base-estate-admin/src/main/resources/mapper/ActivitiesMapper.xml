@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.ActivitiesMapper">
+
+    <resultMap id="activitiesMap" type="com.aiforest.cloud.estate.common.entity.Activities">
+        <id property="id" column="id"/>
+        <result property="ordinal" column="ordinal"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="title" column="title"/>
+        <result property="category" column="category"/>
+        <result property="thumbnail" column="thumbnail"/>
+        <result property="details" column="details"/>
+        <result property="type" column="type"/>
+        <result property="activityLink" column="activity_link"/>
+        <result property="views" column="views"/>
+        <result property="sort" column="sort"/>
+        <result property="affiliation" column="affiliation"/>
+        <result property="affiliationId" column="affiliation_id"/>
+    </resultMap>
+
+    <sql id="activitiesSql">
+        activities.`id`,
+        activities.`ordinal`,
+        activities.`tenant_id`,
+        activities.`del_flag`,
+        activities.`create_time`,
+        activities.`update_time`,
+        activities.`create_id`,
+        activities.`title`,
+        activities.`category`,
+        activities.`thumbnail`,
+        activities.`details`,
+        activities.`type`,
+        activities.`activity_link`,
+        activities.`views`,
+        activities.`sort`,
+        activities.`affiliation`,
+        activities.`affiliation_id`
+    </sql>
+</mapper>

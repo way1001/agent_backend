@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.BasicInfoMapper">
+
+    <resultMap id="basicInfoMap" type="com.aiforest.cloud.estate.common.entity.BasicInfo">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="projectName" column="project_name"/>
+        <result property="salesStatus" column="sales_status"/>
+        <result property="price" column="price"/>
+        <result property="houseType" column="house_type"/>
+        <result property="residenceType" column="residence_type"/>
+        <result property="keywords" column="keywords"/>
+        <result property="floorage" column="floorage"/>
+        <result property="region" column="region"/>
+        <result property="address" column="address"/>
+        <result property="longitude" column="longitude"/>
+        <result property="latitude" column="latitude"/>
+        <result property="premisesMobile" column="premises_mobile"/>
+        <result property="openingDate" column="opening_date"/>
+		<result property="views" column="views"/>
+		<result property="brokerNote" column="broker_note"/>
+		<result property="sort" column="sort"/>
+	</resultMap>
+
+    <sql id="basicInfoSql">
+        basic_info.`id`,
+        basic_info.`tenant_id`,
+        basic_info.`del_flag`,
+        basic_info.`create_time`,
+        basic_info.`update_time`,
+        basic_info.`create_id`,
+        basic_info.`project_name`,
+        basic_info.`sales_status`,
+        basic_info.`price`,
+        basic_info.`house_type`,
+        basic_info.`residence_type`,
+        basic_info.`keywords`,
+        basic_info.`floorage`,
+        basic_info.`region`,
+        basic_info.`address`,
+        basic_info.`longitude`,
+        basic_info.`latitude`,
+        basic_info.`premises_mobile`,
+        basic_info.`opening_date`,
+        basic_info.`views`,
+        basic_info.`broker_note`,
+        basic_info.`sort`
+    </sql>
+
+	<update id="addViews">
+		update basic_info set views=views+1 where id=#{id}
+    </update>
+
+</mapper>

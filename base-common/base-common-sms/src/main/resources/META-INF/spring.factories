@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.aiforest.cloud.common.sms.config.SmsConfigProperties,\
+  com.aiforest.cloud.common.sms.config.SmsTemplateProperties,\
+  com.aiforest.cloud.common.sms.util.SmsUtils

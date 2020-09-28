@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.broker.admin.mapper.ReferralsMapper">
+
+    <resultMap id="referralsMap" type="com.aiforest.cloud.broker.common.entity.Referrals">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+		<result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="phone" column="phone"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="gender" column="gender"/>
+        <result property="description" column="description"/>
+        <result property="affiliationId" column="affiliation_id"/>
+        <result property="brokerId" column="broker_id"/>
+        <result property="brokerName" column="broker_name"/>
+        <result property="brokerPhone" column="broker_phone"/>
+        <result property="salesmanId" column="salesman_id"/>
+        <result property="inviteeId" column="invitee_id"/>
+        <result property="currentHandler" column="current_handler"/>
+        <result property="staffId" column="staff_id"/>
+        <result property="instanceId" column="instance_id"/>
+        <result property="workflowStatus" column="workflow_status"/>
+    </resultMap>
+
+    <sql id="referralsSql">
+        referrals.`id`,
+        referrals.`tenant_id`,
+        referrals.`del_flag`,
+        referrals.`create_time`,
+        referrals.`update_time`,
+        referrals.`phone`,
+        referrals.`customer_name`,
+        referrals.`gender`,
+        referrals.`description`,
+        referrals.`affiliation_id`,
+        referrals.`broker_id`,
+        referrals.`broker_name`,
+        referrals.`broker_phone`,
+        referrals.`salesman_id`,
+        referrals.`invitee_id`,
+        referrals.`current_handler`,
+        referrals.`staff_id`,
+        referrals.`instance_id`,
+        referrals.`workflow_status`
+    </sql>
+
+	<select id="selectPage1" resultMap="referralsMap">
+		SELECT
+		<include refid="referralsSql"/>
+		FROM referrals referrals
+		<where>
+			<if test="query.brokerId != null">
+				AND referrals.`broker_id` = #{query.brokerId}
+			</if>
+			<if test="query.affiliationId != null">
+				AND referrals.`affiliation_id` = #{query.affiliationId}
+			</if>
+			<if test="query.tenantId != null">
+				AND referrals.`tenant_id` = #{query.tenantId}
+			</if>
+			<if test="query.currentHandler != null and query.currentHandler != ''">
+				AND referrals.`current_handler` = #{query.currentHandler}
+			</if>
+			<if test="query.phone != null and query.phone != ''">
+				AND referrals.`phone` LIKE CONCAT('%',#{query.phone},'%')
+			</if>
+			<if test="query.customerName != null and query.customerName != ''">
+				AND referrals.`customer_name` LIKE CONCAT('%',#{query.customerName},'%')
+			</if>
+		</where>
+	</select>
+</mapper>

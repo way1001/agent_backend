@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiforest.cloud.upms.admin.mapper.SysTenantMapper">
+
+	<resultMap id="sysTenantMap" type="com.aiforest.cloud.upms.common.entity.SysTenant">
+		<id property="id" column="id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="sort" column="sort"/>
+		<result property="type" column="type"/>
+		<result property="code" column="code"/>
+		<result property="name" column="name"/>
+		<result property="phone" column="phone"/>
+		<result property="fax" column="fax"/>
+		<result property="email" column="email"/>
+		<result property="address" column="address"/>
+		<result property="remarks" column="remarks"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="status" column="status"/>
+		<result property="tenantId" column="tenant_id"/>
+	</resultMap>
+
+	<sql id="sysTenantSql">
+        sys_organ.`id`,
+        sys_organ.`create_time`,
+        sys_organ.`update_time`,
+        sys_organ.`parent_id`,
+        sys_organ.`sort`,
+        sys_organ.`type`,
+        sys_organ.`code`,
+        sys_organ.`name`,
+        sys_organ.`phone`,
+        sys_organ.`fax`,
+        sys_organ.`email`,
+        sys_organ.`address`,
+        sys_organ.`remarks`,
+        sys_organ.`del_flag`,
+        sys_organ.`status`,
+        sys_organ.`tenant_id`
+    </sql>
+
+	<delete id="deleteSysTenantById">
+		DELETE FROM `sys_config_editor` WHERE `tenant_id` = #{id};
+		DELETE FROM `sys_config_storage` WHERE `tenant_id` = #{id};
+		DELETE FROM `sys_datasource` WHERE `tenant_id` = #{id};
+		DELETE FROM `sys_log` WHERE `tenant_id` = #{id};
+		DELETE FROM `sys_organ` WHERE `tenant_id` = #{id};
+		DELETE FROM `sys_organ_relation` WHERE `tenant_id` = #{id};
+		DELETE FROM `sys_role` WHERE `tenant_id` = #{id};
+		DELETE FROM `sys_role_menu` WHERE `tenant_id` = #{id};
+		DELETE FROM `sys_user` WHERE `tenant_id` = #{id};
+		DELETE FROM `sys_user_role` WHERE `tenant_id` = #{id};
+	</delete>
+
+</mapper>

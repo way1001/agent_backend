@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.upms.admin.mapper.SysLogLoginMapper">
+
+	<resultMap id="sysLogLoginMap" type="com.aiforest.cloud.upms.common.entity.SysLogLogin">
+		<id property="id" column="id"/>
+		<result property="createId" column="create_id"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="remoteAddr" column="remote_addr"/>
+		<result property="userAgent" column="user_agent"/>
+		<result property="requestUri" column="request_uri"/>
+		<result property="params" column="params"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="address" column="address"/>
+		<result property="tenantId" column="tenant_id"/>
+	</resultMap>
+
+	<sql id="sysLogLoginSql">
+        sys_log_login.`id`,        sys_log_login.`create_id`,        sys_log_login.`create_by`,        sys_log_login.`create_time`,        sys_log_login.`update_time`,        sys_log_login.`remote_addr`,        sys_log_login.`user_agent`,        sys_log_login.`request_uri`,        sys_log_login.`params`,        sys_log_login.`del_flag`,        sys_log_login.`address`,        sys_log_login.`tenant_id`    </sql>
+</mapper>

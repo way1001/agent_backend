@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.ApartmentLayoutMapper">
+
+    <resultMap id="apartmentLayoutMap" type="com.aiforest.cloud.estate.common.entity.ApartmentLayout">
+        <id property="id" column="id"/>
+		<result property="ordinal" column="ordinal"/>
+		<result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="salesStatus" column="sales_status"/>
+        <result property="src" column="src"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="keywords" column="keywords"/>
+        <result property="type" column="type"/>
+		<result property="category" column="category"/>
+		<result property="floorage" column="floorage"/>
+        <result property="orientation" column="orientation"/>
+        <result property="sort" column="sort"/>
+        <result property="isStick" column="is_stick"/>
+		<result property="affiliationId" column="affiliation_id"/>
+	</resultMap>
+
+	<resultMap id="apartmentLayoutMap2" extends="apartmentLayoutMap" type="com.aiforest.cloud.estate.common.entity.ApartmentLayout">
+		<collection property="listTopicReply" ofType="com.aiforest.cloud.estate.common.entity.TopicReply"
+					select="com.aiforest.cloud.estate.admin.mapper.TopicReplyMapper.selectList2"
+					column="{query.typesId=id,query.replyTypes=replyTypes}">
+		</collection>
+	</resultMap>
+
+    <sql id="apartmentLayoutSql">
+        apartment_layout.`id`,
+        apartment_layout.`ordinal`,
+        apartment_layout.`tenant_id`,
+        apartment_layout.`del_flag`,
+        apartment_layout.`create_time`,
+        apartment_layout.`update_time`,
+        apartment_layout.`create_id`,
+        apartment_layout.`sales_status`,
+        apartment_layout.`src`,
+        apartment_layout.`name`,
+        apartment_layout.`price`,
+        apartment_layout.`keywords`,
+        apartment_layout.`type`,
+        apartment_layout.`category`,
+        apartment_layout.`floorage`,
+        apartment_layout.`orientation`,
+        apartment_layout.`sort`,
+        apartment_layout.`is_stick`,
+        apartment_layout.`affiliation_id`
+    </sql>
+
+	<select id="selectPage1" resultMap="apartmentLayoutMap2">
+		SELECT
+		<include refid="apartmentLayoutSql"/>,
+		3 as replyTypes
+		FROM apartment_layout apartment_layout
+		<where>
+			<if test="query.id != null">
+				AND apartment_layout.`id` = #{query.id}
+			</if>
+			<if test="query.affiliationId != null">
+				AND apartment_layout.`affiliation_id` = #{query.affiliationId}
+			</if>
+		</where>
+	</select>
+
+</mapper>

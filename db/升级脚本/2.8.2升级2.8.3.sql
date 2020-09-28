@@ -1,0 +1,36 @@
+DELETE FROM `base_upms`.`sys_menu` WHERE `id` IN ('1100000','2600000','e9c150621e6bcfd7f0cea479d2ab9236','1227524298689736706','1233957113861967874','1300000','1400000','1200000','1243832970918268930','2100000',
+'1227202599968567298','1234086429899862018','2700000','2200000','1224306298712969218','1226759608866893825','2400000');
+
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('1100000','用户管理',NULL,'user','1000000','icon-yonghu','views/upms/user/index','1','0','0','2017-11-02 22:24:37','2020-04-26 18:42:27','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('1200000','菜单管理',NULL,'menu','1000000','icon-caidanguanli','views/upms/menu/index','4','0','0','2017-11-08 09:57:27','2020-04-26 18:42:58','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('1224306298712969218','文件存储配置',NULL,'configstorage','1226762096135340033','el-icon-s-management','views/upms/configstorage/form','15','0','0','2020-02-03 20:19:02','2020-04-26 18:43:16','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('1226759608866893825','文本编辑器配置','','configeditor','1226762096135340033','el-icon-s-unfold','views/upms/configeditor/form','30','0','0','2020-02-10 14:47:37','2020-04-26 18:43:19','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('1227202599968567298','邮件管理','','email','1227202152985784322','el-icon-s-promotion','views/upms/email/form','10','0','0','2020-02-11 20:07:54','2020-04-26 18:43:07','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('1227524298689736706','短信工具','','sms','1227202152985784322','el-icon-s-comment','views/upms/sms/form','20','0','0','2020-02-12 17:26:13','2020-04-26 18:42:49','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('1233957113861967874','服务监控','','server','1227202152985784322','el-icon-s-marketing','views/upms/server/index','30','0','0','2020-03-01 11:27:56','2020-04-26 18:42:51','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('1234086429899862018','数据监控','','druid','1227202152985784322','el-icon-s-operation','views/upms/druid/index','40','0','0','2020-03-01 20:01:47','2020-04-26 18:43:10','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('1243832970918268930','登录日志','','loglogin','2000000','el-icon-info','views/upms/loglogin/index','4','0','0','2020-03-28 17:31:04','2020-04-26 18:43:02','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('1300000','角色管理',NULL,'role','1000000','icon-jiaose','views/upms/role/index','2','0','0','2017-11-08 10:13:37','2020-04-26 18:42:53','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('1400000','机构管理',NULL,'organ','1000000','icon-bumen','views/upms/organ/index','3','0','0','2018-01-20 13:17:19','2020-04-26 18:42:56','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('2100000','操作日志',NULL,'log','2000000','el-icon-s-order','views/upms/log/index','5','0','0','2017-11-20 14:06:22','2020-04-26 18:43:05','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('2200000','字典管理',NULL,'dict','2000000','icon-zidian','views/upms/dict/index','6','0','0','2017-11-29 11:30:52','2020-04-26 18:43:14','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('2400000','终端管理','','client','1000000','icon-shouji','views/upms/client/index','9','0','0','2018-01-20 13:17:19','2020-04-26 18:43:24','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('2600000','令牌管理',NULL,'token','2000000','icon-lingpai','views/upms/token/index','11','0','0','2018-09-04 05:58:41','2020-04-26 18:42:30','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('2700000','接口文档',NULL,'doc','1227202152985784322','el-icon-s-claim','views/upms/doc/index','8','0','0','2019-07-31 11:41:39','2020-04-26 18:43:12','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('e9c150621e6bcfd7f0cea479d2ab9236','租户管理','','tenant','1000000','el-icon-s-grid','views/upms/tenant/index','1','0','0','2019-10-12 20:33:27','2020-04-26 18:42:45','0');
+
+DELETE FROM `base_upms`.`sys_menu` WHERE `id` IN ('1000000','2000000');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('1000000','权限管理',NULL,'/auth','0','icon-quanxianguanli','Layout','2','0','0','2018-09-28 08:29:53','2020-04-26 18:57:16','0');
+insert into `base_upms`.`sys_menu` (`id`, `name`, `permission`, `path`, `parent_id`, `icon`, `component`, `sort`, `keep_alive`, `type`, `create_time`, `update_time`, `del_flag`) values('2000000','系统管理',NULL,'/sys','0','icon-xitongguanli','Layout','1','0','0','2017-11-07 20:56:00','2020-04-26 18:56:40','0');
+
+
+DELETE FROM `base_upms`.`gen_table`;
+
+ALTER TABLE `base_upms`.`gen_table` ADD COLUMN `gen_key` VARCHAR(50) NOT NULL COMMENT '服务的路由key' AFTER `table_prefix`; 
+
+
+ALTER TABLE `base_wx`.`wx_app` DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `tenant_id`); 
+
+ALTER TABLE `base_wx`.`wx_app` DROP INDEX `uk_weixin_sign`, ADD UNIQUE INDEX `uk_weixin_sign` (`weixin_sign`, `tenant_id`); 
+
+ALTER TABLE `base_upms`.`sys_datasource` CHANGE `url` `url` VARCHAR(500) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL; 

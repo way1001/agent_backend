@@ -1,0 +1,64 @@
+routes:
+# base-auth
+- id: base-auth
+  predicates:
+  - name: Path
+    args: 
+      _genkey_0: /auth/**
+  filters:
+  - name: ValidateCodeGatewayFilter
+    args: {}
+  - name: PasswordDecoderFilter
+    args: {}
+  uri: lb://base-auth
+  order: 0
+# base-upms-admin
+- id: base-upms-admin
+  predicates:
+  - name: Path
+    args: 
+      _genkey_0: /upms/**
+  filters:
+  - name: RequestRateLimiter
+    args: 
+      # 限流策略
+      key-resolver: '#{@remoteAddrKeyResolver}'
+      # 令牌桶每秒填充率
+      redis-rate-limiter.burstCapacity: 20
+      # 令牌桶容量
+      redis-rate-limiter.replenishRate: 20
+  # 熔断
+  - name: Hystrix
+    args: 
+      fallbackUri: 'forward:/fallback'
+      name: default
+  uri: lb://base-upms-admin
+  order: 0
+# base-codegen
+- id: base-codegen
+  predicates:
+  - name: Path
+    args: 
+      _genkey_0: /gen/**
+  filters: []
+  uri: lb://base-codegen
+  order: 0
+# base-weixin-admin
+- id: base-weixin-admin
+  predicates:
+  - name: Path
+    args: 
+      _genkey_0: /weixin/**
+  filters: []
+  uri: lb://base-weixin-admin
+  order: 0
+# base-mall-admin
+- id: base-mall-admin
+  predicates:
+  - name: Path
+    args: 
+      _genkey_0: /mall/**
+  filters: []
+  uri: lb://base-mall-admin
+  order: 0
+  

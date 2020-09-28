@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.aiforest.cloud.common.yuntongxun.config.YuntongxunConfigProperties,\
+  com.aiforest.cloud.common.yuntongxun.config.YuntongxunTemplateProperties,\
+  com.aiforest.cloud.common.yuntongxun.util.YuntongxunSmsUtils

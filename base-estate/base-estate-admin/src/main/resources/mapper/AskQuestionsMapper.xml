@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.AskQuestionsMapper">
+
+    <resultMap id="askQuestionsMap" type="com.aiforest.cloud.estate.common.entity.AskQuestions">
+        <id property="id" column="id"/>
+		<result property="ordinal" column="ordinal"/>
+		<result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="content" column="content"/>
+        <result property="answerNum" column="answer_num"/>
+        <result property="auditStatus" column="audit_status"/>
+		<result property="affiliationId" column="affiliation_id"/>
+	</resultMap>
+
+	<resultMap id="askQuestionsMap2" extends="askQuestionsMap" type="com.aiforest.cloud.estate.common.entity.AskQuestions">
+		<collection property="listTopicReply" ofType="com.aiforest.cloud.estate.common.entity.TopicReply"
+					select="com.aiforest.cloud.estate.admin.mapper.TopicReplyMapper.selectList2"
+					column="{query.typesId=id,query.replyTypes=replyTypes}">
+		</collection>
+		<collection property="userInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById1"
+					column="{query.id=create_id}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="askQuestionsMap3" extends="askQuestionsMap" type="com.aiforest.cloud.estate.common.entity.AskQuestions">
+		<collection property="userInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById1"
+					column="{query.id=create_id}">
+		</collection>
+	</resultMap>
+
+    <sql id="askQuestionsSql">
+        ask_questions.`id`,
+        ask_questions.`ordinal`,
+        ask_questions.`tenant_id`,
+        ask_questions.`del_flag`,
+        ask_questions.`create_time`,
+        ask_questions.`create_id`,
+        ask_questions.`content`,
+        ask_questions.`answer_num`,
+        ask_questions.`audit_status`,
+        ask_questions.`affiliation_id`
+    </sql>
+
+	<select id="selectPage1" resultMap="askQuestionsMap2">
+		SELECT
+		<include refid="askQuestionsSql"/>,
+		4 as replyTypes
+		FROM ask_questions ask_questions
+		<where>
+			<if test="query.id != null">
+				AND ask_questions.`id` = #{query.id}
+			</if>
+			<if test="query.userId != null">
+				AND ask_questions.`create_id` = #{query.userId}
+			</if>
+			<if test="query.createId != null and query.auditStatus == '1'.toString()">
+				AND ask_questions.`audit_status` = '1'
+				OR (( ask_questions.`audit_status` = '0' OR ask_questions.`audit_status` = '2')
+				AND ask_questions.`create_id` = #{query.createId})
+			</if>
+			<if test="query.affiliationId != null">
+				AND ask_questions.`affiliation_id` = #{query.affiliationId}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectPage2" resultMap="askQuestionsMap3">
+		SELECT
+		<include refid="askQuestionsSql"/>,
+		4 as replyTypes
+		FROM ask_questions ask_questions
+		<where>
+			<if test="query.createId != null">
+				AND ask_questions.`create_id` = #{query.createId}
+			</if>
+		</where>
+	</select>
+
+
+</mapper>

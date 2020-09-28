@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.broker.admin.mapper.VariableDefinitionMapper">
+
+    <resultMap id="variableDefinitionMap" type="com.aiforest.cloud.broker.common.entity.VariableDefinition">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+		<result property="affiliationId" column="affiliation_id"/>
+		<result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="variableId" column="variable_id"/>
+        <result property="variableType" column="variable_type"/>
+        <result property="variableLabel" column="variable_label"/>
+        <result property="variableString" column="variable_string"/>
+        <result property="variableBoolean" column="variable_boolean"/>
+        <result property="variableInteger" column="variable_integer"/>
+        <result property="definitionId" column="definition_id"/>
+        <result property="definitionKey" column="definition_key"/>
+		<result property="description" column="description"/>
+    </resultMap>
+
+    <sql id="variableDefinitionSql">
+        variable_definition.`id`,
+        variable_definition.`tenant_id`,
+        variable_definition.`affiliation_id`,
+        variable_definition.`create_time`,
+        variable_definition.`update_time`,
+        variable_definition.`variable_id`,
+        variable_definition.`variable_type`,
+        variable_definition.`variable_label`,
+        variable_definition.`variable_string`,
+        variable_definition.`variable_boolean`,
+        variable_definition.`variable_integer`,
+        variable_definition.`definition_id`,
+        variable_definition.`definition_key`,
+        variable_definition.`description`
+    </sql>
+</mapper>

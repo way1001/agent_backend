@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>base-broker</artifactId>
+		<groupId>com.aiforest</groupId>
+		<version>2.8.5</version>
+	</parent>
+
+	<artifactId>base-broker-admin</artifactId>
+	<packaging>jar</packaging>
+
+	<description>房产管理模块</description>
+
+	<properties>
+		<drools.version>7.43.0.Final</drools.version>
+		<version.assertj>3.12.2</version.assertj>
+		<version.bpm-assert>4.0.0</version.bpm-assert>
+		<version.mockito>2.24.5</version.mockito>
+		<version.powermock>2.0.0</version.powermock>
+	</properties>
+
+	<dependencies>
+		<!--注册中心客户端-->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.ws.rs</groupId>
+					<artifactId>jsr311-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!--配置中心客户端-->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+		</dependency>
+		<!--mybatis-->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+		</dependency>
+		<!--数据库-->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<!--日志处理-->
+		<dependency>
+			<groupId>com.aiforest</groupId>
+			<artifactId>base-common-log</artifactId>
+		</dependency>
+		<!--数据操作-->
+		<dependency>
+			<groupId>com.aiforest</groupId>
+			<artifactId>base-common-data</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.aiforest</groupId>
+			<artifactId>base-common-storage</artifactId>
+		</dependency>
+		<!--common-->
+		<dependency>
+			<groupId>com.aiforest</groupId>
+			<artifactId>base-common-core</artifactId>
+		</dependency>
+		<!--swagger-->
+		<dependency>
+			<groupId>com.aiforest</groupId>
+			<artifactId>base-common-swagger</artifactId>
+		</dependency>
+		<!--安全模块-->
+		<dependency>
+			<groupId>com.aiforest</groupId>
+			<artifactId>base-common-security</artifactId>
+		</dependency>
+		<!--web 模块-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!--undertow容器-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
+		</dependency>
+		<!-- druid 连接池 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+		</dependency>
+		<!-- base-broker-common -->
+		<dependency>
+			<groupId>com.aiforest</groupId>
+			<artifactId>base-broker-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.aiforest</groupId>
+			<artifactId>base-weixin-common</artifactId>
+		</dependency>
+		<!--分布式事务
+		<dependency>
+			<groupId>com.aiforest</groupId>
+			<artifactId>base-common-transaction</artifactId>
+		</dependency>-->
+		<dependency>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>weixin-java-miniapp</artifactId>
+		</dependency>
+		<!--yuntongxun-->
+		<dependency>
+			<groupId>com.aiforest</groupId>
+			<artifactId>base-common-yuntongxun</artifactId>
+		</dependency>
+		<!-- gRPC api-->
+		<dependency>
+			<groupId>com.aiforest</groupId>
+			<artifactId>base-common-grpc</artifactId>
+		</dependency>
+		<!-- gRPC Spring Boot Starter -->
+		<dependency>
+			<groupId>net.devh</groupId>
+			<artifactId>grpc-server-spring-boot-starter</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot-starter -->
+		<!-- replace -->
+		<!--<dependency>-->
+			<!--<groupId>org.activiti</groupId>-->
+			<!--<artifactId>activiti-spring-boot-starter</artifactId>-->
+			<!--<version>7.1.0.M6</version>-->
+			<!--<exclusions>-->
+				<!--<exclusion>-->
+					<!--<groupId>org.mybatis</groupId>-->
+					<!--<artifactId>mybatis</artifactId>-->
+				<!--</exclusion>-->
+			<!--</exclusions>-->
+		<!--</dependency>-->
+
+		<dependency>
+			<groupId>org.camunda.bpm.springboot</groupId>
+			<artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.camunda.bpm.springboot</groupId>
+			<artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
+		</dependency>
+
+		<!--Drools-->
+		<dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-spring</artifactId>
+			<version>${drools.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-tx</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-api</artifactId>
+			<version>${drools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-core</artifactId>
+			<version>${drools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-compiler</artifactId>
+			<version>${drools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-decisiontables</artifactId>
+			<version>${drools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-templates</artifactId>
+			<version>${drools.version}</version>
+		</dependency>
+
+
+		<!-- testing -->
+		<dependency>
+			<groupId>org.camunda.bpm.extension</groupId>
+			<artifactId>camunda-bpm-process-test-coverage</artifactId>
+			<version>0.3.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.camunda.bpm.assert</groupId>
+			<artifactId>camunda-bpm-assert</artifactId>
+			<version>${version.bpm-assert}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${version.assertj}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${version.powermock}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${version.mockito}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+			</plugin>
+
+			<!--打包时复制jar包到指定文件目录-->
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id><!--需要唯一-->
+						<phase>package</phase><!--当执行package操作时执行一下任务-->
+						<configuration>
+							<tasks><!--任务-->
+								<echo message="start.................................."/><!--打印-->
+								<echo message="load maven plugin ant-contrib-1.0b3"/>
+								<!--加载plugin ant-contrib的配置文件-->
+								<taskdef resource="net/sf/antcontrib/antlib.xml">
+									<classpath><!--加载jar包,${settings.localRepository}的值是你maven settings文件中配置的本地仓库位置-->
+										<pathelement location="${settings.localRepository}/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar"/>
+									</classpath>
+								</taskdef>
+								<!--复制jar包-->
+								<if>
+									<equals arg1="${copy}" arg2="true"/><!--是否复制jar包-->
+									<then>
+										<echo message="Copy jar to your desired path."/>
+										<copy todir="${localDir}" overwrite="true"><!--执行复制操作,todir的值是将要复制jar包到的地方,overwrite是否重写-->
+											<fileset dir="${project.build.directory}"><!--${project.build.directory}值是你的target目录-->
+												<include name="*.jar"/><!--target目录下的jar包-->
+											</fileset>
+										</copy>
+									</then>
+								</if>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.ReviewsMapper">
+
+    <resultMap id="reviewsMap" type="com.aiforest.cloud.estate.common.entity.Reviews">
+        <id property="id" column="id"/>
+		<result property="ordinal" column="ordinal"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="content" column="content"/>
+        <result property="price" column="price"/>
+        <result property="location" column="location"/>
+        <result property="environment" column="environment"/>
+        <result property="supporting" column="supporting"/>
+        <result property="transportation" column="transportation"/>
+        <result property="guestbooks" column="guestbooks"/>
+        <result property="likes" column="likes"/>
+        <result property="views" column="views"/>
+        <result property="isVisited" column="is_visited"/>
+        <result property="isAnonymous" column="is_anonymous"/>
+		<result property="auditStatus" column="audit_status"/>
+		<result property="affiliationId" column="affiliation_id"/>
+	</resultMap>
+
+	<resultMap id="reviewsMap2" extends="reviewsMap" type="com.aiforest.cloud.estate.common.entity.Reviews">
+		<collection property="listTopicReply" ofType="com.aiforest.cloud.estate.common.entity.TopicReply"
+					select="com.aiforest.cloud.estate.admin.mapper.TopicReplyMapper.selectList2"
+					column="{query.typesId=id,query.replyTypes=replyTypes}">
+		</collection>
+		<collection property="userInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById1"
+					column="{query.id=create_id}">
+		</collection>
+		<collection property="upvote" ofType="com.aiforest.cloud.estate.common.entity.Likes"
+					select="com.aiforest.cloud.estate.admin.mapper.LikesMapper.getByLikesId"
+					column="{query.likesId=id, query.likesType=replyTypes}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="reviewsMap3" extends="reviewsMap" type="com.aiforest.cloud.estate.common.entity.Reviews">
+		<collection property="userInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById"
+					column="{id=create_id}">
+		</collection>
+		<collection property="listTopicReply" ofType="com.aiforest.cloud.estate.common.entity.TopicReply"
+					select="com.aiforest.cloud.estate.admin.mapper.TopicReplyMapper.getOfficialReplyById"
+					column="{query.typesId=id,query.replyTypes=replyTypes}">
+		</collection>
+	</resultMap>
+
+    <sql id="reviewsSql">
+        reviews.`id`,
+        reviews.`ordinal`,
+        reviews.`tenant_id`,
+        reviews.`del_flag`,
+        reviews.`create_time`,
+        reviews.`update_time`,
+        reviews.`create_id`,
+        reviews.`content`,
+        reviews.`price`,
+        reviews.`location`,
+        reviews.`environment`,
+        reviews.`supporting`,
+        reviews.`transportation`,
+        reviews.`guestbooks`,
+        reviews.`likes`,
+        reviews.`views`,
+        reviews.`is_visited`,
+        reviews.`is_anonymous`,
+        reviews.`audit_status`,
+        reviews.`affiliation_id`
+    </sql>
+
+	<select id="selectPage1" resultMap="reviewsMap2">
+		SELECT
+		<include refid="reviewsSql"/>,
+		2 as replyTypes
+		FROM reviews reviews
+		<where>
+			<if test="query.id != null">
+				AND reviews.`id` = #{query.id}
+			</if>
+			<if test="query.userId != null">
+				AND reviews.`create_id` = #{query.userId}
+			</if>
+			<if test="query.createId != null and query.auditStatus == '1'.toString()">
+				AND reviews.`audit_status` = '1'
+				OR (( reviews.`audit_status` = '0' OR reviews.`audit_status` = '2')
+				AND reviews.`create_id` = #{query.createId})
+			</if>
+			<if test="query.affiliationId != null">
+				AND reviews.`affiliation_id` = #{query.affiliationId}
+			</if>
+		</where>
+	</select>
+
+	<update id="addViews">
+		update reviews set views=views+1 where id=#{id}
+    </update>
+
+	<select id="selectPage2" resultMap="reviewsMap3">
+		SELECT
+		<include refid="reviewsSql"/>,
+		2 as replyTypes
+		FROM reviews reviews
+		<where>
+			<if test="query.createId != null">
+				AND reviews.`create_id` = #{query.createId}
+			</if>
+		</where>
+	</select>
+
+</mapper>

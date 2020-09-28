@@ -1,0 +1,129 @@
+# 使用说明
+# 1. 使用docker-compose  不需要配置hosts
+# 2. 根目录docker-compose up
+# 3. 等待服务启动
+
+version: '2'
+services:
+  base-redis:
+    image: redis:5.0.4
+    restart: always
+    container_name: base-redis
+    ports:
+      - 6379:6379
+
+  base-mysql:
+    build:
+      context: ./
+      dockerfile: ./db/Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    restart: always
+    container_name: base-mysql
+    image: base-mysql
+    ports:
+      - 3306:3306
+    privileged: true
+    volumes:
+      - ./base-mysql:/var/lib/mysql
+    command: --lower_case_table_names=1
+    depends_on:
+      - base-redis
+
+  # 参考https://nacos.io/zh-cn/docs/quick-start-docker.html
+  base-nacos:
+    image: nacos/nacos-server:1.3.0
+    restart: always
+    container_name: base-nacos
+    environment:
+      - MODE=standalone
+      - SPRING_DATASOURCE_PLATFORM=mysql
+      - MYSQL_SERVICE_HOST=base-mysql
+      - MYSQL_SERVICE_PORT=3306
+      - MYSQL_SERVICE_DB_NAME=base_config
+      - MYSQL_SERVICE_USER=root
+      - MYSQL_SERVICE_PASSWORD=root
+    privileged: true
+    volumes:
+      # nacos使用mysql8 需要使用插件目录，该目录存放mysql-connect-java8的驱动，将解压包内example/plugins复制到上级目录
+      - ./server/nacos-server/plugins/mysql/:/home/nacos/plugins/mysql/
+    ports:
+      - 8848:8848
+    depends_on:
+      - base-mysql
+#
+#  # 参考https://seata.io/zh-cn/docs/ops/deploy-by-docker.html
+#  base-seata:
+#    image: seataio/seata-server:1.2.0
+#    restart: always
+#    hostname: base-seata
+#    environment:
+#      - SEATA_CONFIG_NAME=file:/root/seata-config/registry
+#    volumes:
+#      - /mnt/install/aiforest/server/seata-server/conf:/root/seata-config
+#    ports:
+#        - 8091:8091
+#    depends_on:
+#      - base-nacos
+
+  base-gateway:
+    build:
+      context: ./
+      dockerfile: ./base-gateway/Dockerfile
+    restart: always
+    container_name: base-gateway
+    image: base-gateway
+    ports:
+      - 9999:9999
+    depends_on:
+      - base-nacos
+
+  base-auth:
+    build:
+      context: ./
+      dockerfile: ./base-auth/Dockerfile
+    restart: always
+    container_name: base-auth
+    image: base-auth
+    depends_on:
+      - base-nacos
+
+  base-upms:
+    build:
+      context: ./
+      dockerfile: ./base-upms/base-upms-admin/Dockerfile
+    restart: always
+    container_name: base-upms
+    image: base-upms
+    depends_on:
+      - base-nacos
+
+  base-weixin:
+    build:
+      context: ./
+      dockerfile: ./base-weixin/base-weixin-admin/Dockerfile
+    restart: always
+    container_name: base-weixin
+    image: base-weixin
+    depends_on:
+      - base-nacos
+
+  base-mall:
+    build:
+      context: ./
+      dockerfile: ./base-mall/base-mall-admin/Dockerfile
+    restart: always
+    container_name: base-mall
+    image: base-mall
+    depends_on:
+      - base-nacos
+
+  base-codegen:
+    build:
+      context: ./
+      dockerfile: ./base-codegen/Dockerfile
+    restart: always
+    image: base-codegen
+    container_name: base-codegen
+    depends_on:
+      - base-nacos

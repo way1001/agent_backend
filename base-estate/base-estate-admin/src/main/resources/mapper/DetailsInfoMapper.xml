@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.DetailsInfoMapper">
+
+    <resultMap id="detailsInfoMap" type="com.aiforest.cloud.estate.common.entity.DetailsInfo">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="salesAddress" column="sales_address"/>
+        <result property="architecturalTypes" column="architectural_types"/>
+        <result property="decorationStandard" column="decoration_standard"/>
+        <result property="developers" column="developers"/>
+        <result property="plotRatio" column="plot_ratio"/>
+        <result property="greeningRate" column="greening_rate"/>
+        <result property="planningUser" column="planning_user"/>
+        <result property="coverArea" column="cover_area"/>
+        <result property="floorArea" column="floor_area"/>
+        <result property="parkingNumber" column="parking_number"/>
+        <result property="parkingRatio" column="parking_ratio"/>
+        <result property="projectSchedule" column="project_schedule"/>
+        <result property="description" column="description"/>
+		<result property="affiliationId" column="affiliation_id"/>
+    </resultMap>
+
+	<resultMap id="detailsInfoMap2" extends="detailsInfoMap" type="com.aiforest.cloud.estate.common.entity.DetailsInfo">
+		<collection property="detailsInfoSurroundingList" ofType="com.aiforest.cloud.estate.common.entity.DetailsInfoSurrounding"
+					select="com.aiforest.cloud.estate.admin.mapper.DetailsInfoSurroundingMapper.listByDetailsId"
+					column="{detailsId=id}">
+		</collection>
+	</resultMap>
+
+    <sql id="detailsInfoSql">
+        details_info.`id`,
+        details_info.`tenant_id`,
+        details_info.`del_flag`,
+        details_info.`create_time`,
+        details_info.`update_time`,
+        details_info.`create_id`,
+        details_info.`sales_address`,
+        details_info.`architectural_types`,
+        details_info.`decoration_standard`,
+        details_info.`developers`,
+        details_info.`plot_ratio`,
+        details_info.`greening_rate`,
+        details_info.`planning_user`,
+        details_info.`cover_area`,
+        details_info.`floor_area`,
+		details_info.`parking_number`,
+		details_info.`parking_ratio`,
+		details_info.`project_schedule`,
+		details_info.`description`,
+		details_info.`affiliation_id`
+    </sql>
+
+	<select id="getOne1" resultMap="detailsInfoMap2">
+		SELECT
+		<include refid="detailsInfoSql"/>
+		FROM details_info details_info
+		<where>
+		  <if test="affiliationId != null">
+		    AND details_info.`affiliation_id` = #{affiliationId}
+		  </if>
+		  <if test="affiliationId == null">
+			AND 1 = 1
+		  </if>
+		</where>
+		LIMIT 0,1
+	</select>
+
+	<!--<select id="getOne2" resultMap="detailsInfoMap2">-->
+		<!--SELECT-->
+		<!--<include refid="detailsInfoSql"/>-->
+		<!--FROM details_info details_info-->
+		<!--<where>-->
+			<!--<if test="advertisementId != null">-->
+				<!--AND details_info.`advertisement_id` = #{query.advertisementId}-->
+			<!--</if>-->
+		<!--</where>-->
+	<!--</select>-->
+
+</mapper>

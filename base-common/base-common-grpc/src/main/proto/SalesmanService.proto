@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+
+package com.aiforest.cloud.common.grpc.api;
+
+message SalesmanGetRequest {
+    string id = 1;
+    string tenantId = 2;
+}
+
+message SalesmanGetResponse {
+   Salesman salesman = 1;
+}
+
+message SalesmanGetAllRequest {
+    string affiliationId = 1;
+    string tenantId = 2;
+}
+
+message SalesmanGetAllResponse {
+    string affiliationId = 1;
+    repeated Salesman salesmen = 2;
+}
+
+message Salesman {
+   string id = 1;
+   int32 userCode = 2;
+   string phone = 3;
+   string userRole = 4;
+   string nickName = 5;
+   string realName = 6;
+   string sex = 7;
+   string userStatus = 8;
+   string headimgUrl = 9;
+   string userQrcode = 10;
+}
+
+service SalesmanService {
+    rpc get(SalesmanGetRequest) returns (SalesmanGetResponse);
+
+    rpc getAll(SalesmanGetAllRequest) returns (SalesmanGetAllResponse);
+}

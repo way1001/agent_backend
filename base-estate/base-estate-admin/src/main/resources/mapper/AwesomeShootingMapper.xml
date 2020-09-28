@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.AwesomeShootingMapper">
+
+    <resultMap id="awesomeShootingMap" type="com.aiforest.cloud.estate.common.entity.AwesomeShooting">
+        <id property="id" column="id"/>
+		<result property="ordinal" column="ordinal"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="content" column="content"/>
+        <result property="picUrls" column="pic_urls"/>
+        <result property="guestbooks" column="guestbooks"/>
+        <result property="likes" column="likes"/>
+        <result property="views" column="views"/>
+		<result property="auditStatus" column="audit_status"/>
+		<result property="affiliationId" column="affiliation_id"/>
+	</resultMap>
+
+	<resultMap id="awesomeShootingMap2" extends="awesomeShootingMap" type="com.aiforest.cloud.estate.common.entity.AwesomeShooting">
+		<collection property="listTopicReply" ofType="com.aiforest.cloud.estate.common.entity.TopicReply"
+					select="com.aiforest.cloud.estate.admin.mapper.TopicReplyMapper.selectList2"
+					column="{query.typesId=id,query.replyTypes=replyTypes}">
+		</collection>
+		<collection property="userInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById1"
+					column="{query.id=create_id}">
+		</collection>
+		<collection property="upvote" ofType="com.aiforest.cloud.estate.common.entity.Likes"
+					select="com.aiforest.cloud.estate.admin.mapper.LikesMapper.getByLikesId"
+					column="{query.likesId=id,query.likesType=replyTypes}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="awesomeShootingMap3" extends="awesomeShootingMap" type="com.aiforest.cloud.estate.common.entity.AwesomeShooting">
+		<collection property="userInfo" ofType="com.aiforest.cloud.estate.common.entity.UserInfo"
+					select="com.aiforest.cloud.estate.admin.mapper.UserInfoMapper.selectById"
+					column="{id=create_id}">
+		</collection>
+		<collection property="listTopicReply" ofType="com.aiforest.cloud.estate.common.entity.TopicReply"
+					select="com.aiforest.cloud.estate.admin.mapper.TopicReplyMapper.getOfficialReplyById"
+					column="{query.typesId=id,query.replyTypes=replyTypes}">
+		</collection>
+	</resultMap>
+
+    <sql id="awesomeShootingSql">
+        awesome_shooting.`id`,
+        awesome_shooting.`ordinal`,
+        awesome_shooting.`tenant_id`,
+        awesome_shooting.`del_flag`,
+        awesome_shooting.`create_time`,
+        awesome_shooting.`update_time`,
+        awesome_shooting.`create_id`,
+        awesome_shooting.`content`,
+        awesome_shooting.`pic_urls`,
+        awesome_shooting.`guestbooks`,
+        awesome_shooting.`likes`,
+        awesome_shooting.`views`,
+        awesome_shooting.`audit_status`,
+        awesome_shooting.`affiliation_id`
+    </sql>
+
+	<select id="selectPage1" resultMap="awesomeShootingMap2">
+		SELECT
+		<include refid="awesomeShootingSql"/>,
+		1 as replyTypes
+		FROM awesome_shooting awesome_shooting
+		<where>
+			<if test="query.userId != null">
+				AND awesome_shooting.`create_id` = #{query.userId}
+			</if>
+			<if test="query.createId != null and query.auditStatus == '1'.toString()">
+				AND awesome_shooting.`audit_status` = '1'
+				OR (( awesome_shooting.`audit_status` = '0' OR awesome_shooting.`audit_status` = '2')
+				AND awesome_shooting.`create_id` = #{query.createId})
+			</if>
+			<if test="query.id != null">
+				AND awesome_shooting.`id` = #{query.id}
+			</if>
+			<if test="query.affiliationId != null">
+				AND awesome_shooting.`affiliation_id` = #{query.affiliationId}
+			</if>
+		</where>
+	</select>
+
+	<update id="addViews">
+		update awesome_shooting set views=views+1 where id=#{id}
+    </update>
+
+	<select id="selectPage2" resultMap="awesomeShootingMap3">
+		SELECT
+		<include refid="awesomeShootingSql"/>,
+		1 as replyTypes
+		FROM awesome_shooting awesome_shooting
+		<where>
+			<if test="query.createId != null">
+				AND awesome_shooting.`create_id` = #{query.createId}
+			</if>
+		</where>
+	</select>
+
+</mapper>

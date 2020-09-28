@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.estate.admin.mapper.AdvertisementMapper">
+
+    <resultMap id="advertisementMap" type="com.aiforest.cloud.estate.common.entity.Advertisement">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createId" column="create_id"/>
+        <result property="type" column="type"/>
+        <result property="name" column="name"/>
+        <result property="remarks" column="remarks"/>
+        <result property="enable" column="enable"/>
+    </resultMap>
+
+	<resultMap id="advertisementMap2" extends="advertisementMap" type="com.aiforest.cloud.estate.common.entity.Advertisement">
+		<collection property="listAdvertisementItem" ofType="com.aiforest.cloud.estate.common.entity.AdvertisementItem"
+					select="com.aiforest.cloud.estate.admin.mapper.AdvertisementItemMapper.selectList2"
+					column="{query.advertisementId=id,query.affiliation=affiliation,query.affiliationId=affiliationId,query.enable=enable}"
+					javaType="java.util.ArrayList">
+		</collection>
+	</resultMap>
+
+    <sql id="advertisementSql">
+        obj.`id`,
+        obj.`tenant_id`,
+        obj.`del_flag`,
+        obj.`create_time`,
+        obj.`update_time`,
+        obj.`create_id`,
+        obj.`type`,
+        obj.`name`,
+        obj.`remarks`,
+        obj.`enable`
+    </sql>
+
+	<select id="getOne2" resultMap="advertisementMap2">
+		SELECT
+		<include refid="advertisementSql"/>,
+		<if test='query.affiliation == "1"'>
+			1 as affiliation,
+			0 as affiliationId
+		</if>
+		<if test='query.affiliation == "2"'>
+			2 as affiliation,
+			#{query.affiliationId} as affiliationId
+		</if>
+		FROM advertisement obj
+		<where>
+			<if test="query.id != null">
+				AND obj.`id` = #{query.id}
+			</if>
+			<if test="query.enable != null">
+				AND obj.`enable` = #{query.enable}
+			</if>
+			<if test="query.type != null">
+				AND obj.`type` = #{query.type}
+			</if>
+		</where>
+	</select>
+
+</mapper>

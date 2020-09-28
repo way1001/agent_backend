@@ -1,0 +1,9 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.aiforest.cloud.common.data.cache.RedisTemplateConfig,\
+    com.aiforest.cloud.common.data.cache.RedisCacheManagerConfig,\
+    com.aiforest.cloud.common.data.cache.RedisCacheAutoConfiguration,\
+    com.aiforest.cloud.common.data.tenant.TenantConfigProperties,\
+    com.aiforest.cloud.common.data.datascope.DataScopeProperties,\
+    com.aiforest.cloud.common.data.tenant.TenantContextHolderFilter,\
+    com.aiforest.cloud.common.data.tenant.BaseFeignTenantConfiguration,\
+    com.aiforest.cloud.common.data.mybatis.MybatisPlusConfig

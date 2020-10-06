@@ -31,7 +31,7 @@ import java.util.Map;
 @SpringCloudApplication
 @EnableBaseFeignClients
 @EnableBaseResourceServer
-@EnableProcessApplication
+@EnableProcessApplication       //TODO auth token
 public class BaseBrokerApplication {
 
 	public static void main(String[] args) {

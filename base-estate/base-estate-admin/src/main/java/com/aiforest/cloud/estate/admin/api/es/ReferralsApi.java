@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 
 /**
- * 房产布告
  *
  * @author way
  * @date 2020-04-03 9:50:56

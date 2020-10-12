@@ -8,6 +8,9 @@
  */
 package com.aiforest.cloud.estate.admin.api.es;
 
+import com.aiforest.cloud.common.grpc.api.SalesmanGetResponse;
+import com.aiforest.cloud.estate.admin.service.SalesmanService;
+import com.aiforest.cloud.estate.common.vo.SalesmanVO;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.aiforest.cloud.common.core.util.R;
@@ -41,6 +44,7 @@ import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSONObject;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
@@ -62,6 +66,7 @@ public class UserInfoApi {
 
     private final UserInfoService userInfoService;
 	private final SmsRecordsService smsRecordsService;
+	private final SalesmanService salesmanService;
 
 	/**
      * 查询商城用户
@@ -169,36 +174,80 @@ public class UserInfoApi {
 
 	}
 
-	@GetMapping("/invitee")
-	public R getInvitee() {
+//	@GetMapping("/invitee")
+//	public R getInvitee() {
+//		UserInfo userInfo = userInfoService.getById(ThirdSessionHolder.getEstateUserId());
+//		if (userInfo != null) {
+//			if (userInfo.getInvitee() == null || userInfo.getInvitee().equals("")) {
+//				UserInfo inviteeUser = userInfoService.getRandSalesman();
+//				if (inviteeUser == null) {
+//					log.info("未能查找到有效用户:{}");
+//					return R.failed("未能查找到有效用户");
+//				}
+//				userInfo.setInvitee(inviteeUser.getId());
+//			} else {
+//				UserInfo inviteeUser = userInfoService.getById(userInfo.getInvitee());
+//				if (inviteeUser == null) {
+//					inviteeUser = userInfoService.getRandSalesman();
+//					if (inviteeUser == null) {
+//						log.info("未能查找到有效用户:{}");
+//						return R.failed("未能查找到有效用户");
+//					}
+//					userInfo.setInvitee(inviteeUser.getId());
+//				} else {
+//					if (!inviteeUser.getUserType().equals("1")) {
+//						inviteeUser = userInfoService.getRandSalesman();
+//						if (inviteeUser == null) {
+//							log.info("未能查找到有效用户:{}");
+//							return R.failed("未能查找到有效用户");
+//						}
+//						userInfo.setInvitee(inviteeUser.getId());
+//					}
+//				}
+//			}
+//			userInfoService.updateById(userInfo);
+//		} else {
+//			log.info("未能查到用户:{}");
+//			return R.failed("未能查找用户");
+//		}
+//
+//		return R.ok(userInfo);
+//	}
+
+	@GetMapping("/distribution")
+	public R getDistribution(@RequestParam("affId") String affiliationId) {
+    	if (affiliationId == null || affiliationId.equals("")) {
+			return R.failed("未能查找到有效楼盘");
+		}
 		UserInfo userInfo = userInfoService.getById(ThirdSessionHolder.getEstateUserId());
 		if (userInfo != null) {
-			if (userInfo.getInvitee() == null || userInfo.getInvitee().equals("")) {
-				UserInfo inviteeUser = userInfoService.getRandSalesman();
-				if (inviteeUser == null) {
-					log.info("未能查找到有效用户:{}");
-					return R.failed("未能查找到有效用户");
-				}
-				userInfo.setInvitee(inviteeUser.getId());
+			List<SalesmanVO> salesmanVOS = salesmanService.getAll(affiliationId);
+
+			if (salesmanVOS.size() <= 0) {
+				return R.failed("未能查找到有效用户");
+			}
+
+			int ra = new Random().nextInt(salesmanVOS.size());
+
+			if (userInfo.getDistribution() == null || userInfo.getDistribution().length <= 0) {
+
+				userInfo.setDistribution(salesmanVOS.get(ra).getId().split(","));
+
 			} else {
-				UserInfo inviteeUser = userInfoService.getById(userInfo.getInvitee());
-				if (inviteeUser == null) {
-					inviteeUser = userInfoService.getRandSalesman();
-					if (inviteeUser == null) {
-						log.info("未能查找到有效用户:{}");
-						return R.failed("未能查找到有效用户");
-					}
-					userInfo.setInvitee(inviteeUser.getId());
-				} else {
-					if (!inviteeUser.getUserType().equals("1")) {
-						inviteeUser = userInfoService.getRandSalesman();
-						if (inviteeUser == null) {
-							log.info("未能查找到有效用户:{}");
-							return R.failed("未能查找到有效用户");
-						}
-					userInfo.setInvitee(inviteeUser.getId());
-					}
+
+				List<String> list = Arrays.asList(userInfo.getDistribution());
+
+				List<SalesmanVO> salesmanVOList = salesmanVOS.stream().filter(
+						salesman ->
+								list.contains(salesman.getId())).collect(Collectors.toList());
+
+				if (salesmanVOList.size() <= 0) {
+
+//					int ra = new Random().nextInt(salesmanVOS.size());
+
+					userInfo.setDistribution(insert(userInfo.getDistribution(), salesmanVOS.get(ra).getId()));
 				}
+
 			}
 			userInfoService.updateById(userInfo);
 		} else {
@@ -215,14 +264,75 @@ public class UserInfoApi {
 //		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
 //			return checkThirdSession;
 //		}
+
+		//TODO broker registration information is incomplete
+
 		UserInfo userInfo = userInfoService.getById(ThirdSessionHolder.getEstateUserId());
 		if (userInfo == null) {
 			log.info("未能查到用户:{}");
 			return R.failed("未能查找用户");
 		}
 		userInfo.setInvitee(id);
+		UserInfo inviteeUser = userInfoService.getById(id);
+		if (inviteeUser != null) {
+			if (inviteeUser.getDistribution() != null && inviteeUser.getDistribution().length > 0) {
+				userInfo.setDistribution(inviteeUser.getDistribution());
+			}
+			return R.ok(userInfoService.updateById(userInfo));
+		}
 		return R.ok(userInfoService.updateById(userInfo));
 	}
+
+	@GetMapping("/distribution/{id}")
+	public R updateByDistribution(@PathVariable("id") String id) {
+
+		//TODO broker registration information is incomplete
+		UserInfo userInfo = userInfoService.getById(ThirdSessionHolder.getEstateUserId());
+		if (userInfo == null) {
+			log.info("未能查到用户:{}");
+			return R.failed("未能查找用户");
+		}
+		SalesmanGetResponse response = salesmanService.get(id);
+		if (response.getSalesman() == null) {
+			log.info("未能查到用户:{}");
+			return R.failed("未能查找用户");
+		}
+		if (userInfo.getDistribution() != null && userInfo.getDistribution().length > 0) {
+			List<String> list = Arrays.asList(userInfo.getDistribution());
+			if (list.contains(response.getSalesman().getId()) && response.getSalesman().getUserStatus().equals("0")) {
+				return R.ok("已绑定用户");
+			}
+			// Do not delete processing
+			userInfo.setDistribution(insert(userInfo.getDistribution(), response.getSalesman().getId()));
+		}
+
+//		List list = new ArrayList<>();
+//		list.add(response.getSalesman().getId());
+//		String[] array = new String[list.size()+1];
+		userInfo.setDistribution(response.getSalesman().getId().split(","));
+
+		return R.ok(userInfoService.updateById(userInfo));
+	}
+
+//	private static String[] insert(String[] arr, String str) {
+//		int size = arr.length;  //获取数组长度
+//		String[] tmp = new String[size + 1];  //新建临时字符串数组，在原来基础上长度加一
+//		for (int i = 0; i < size; i++){  //先遍历将原来的字符串数组数据添加到临时字符串数组
+//			tmp[i] = arr[i];
+//		}
+//		tmp[size] = str;  //在最后添加上需要追加的数据
+//		return tmp;  //返回拼接完成的字符串数组
+//	}
+
+	private static String[] insert(String[] arr, String str)
+	{
+		int size = arr.length;
+		String[] tmp = new String[size + 1];
+		System.arraycopy(arr, 0, tmp, 0, size);
+		tmp[size] = str;
+		return tmp;
+	}
+
 
 	@GetMapping("/summation")
 	public R getSummation() {

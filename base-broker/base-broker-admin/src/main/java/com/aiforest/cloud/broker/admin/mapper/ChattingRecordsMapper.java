@@ -8,26 +8,23 @@
  */
 package com.aiforest.cloud.broker.admin.mapper;
 
-import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.aiforest.cloud.broker.common.entity.UserInfo;
+import com.aiforest.cloud.broker.common.entity.ChattingRecords;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 经纪人用户
+ * 聊天记录
  *
  * @author aiforest
- * @date 2020-08-31 08:43:29
+ * @date 2020-10-07 10:46:02
  */
-@SqlParser(filter=true)
-public interface UserInfoMapper extends BaseMapper<UserInfo> {
-	@SqlParser(filter=true)
-	List<UserInfo> selectList1(String affiliationId, String tenantId);
+public interface ChattingRecordsMapper extends BaseMapper<ChattingRecords> {
 
-	@SqlParser(filter=true)
-	UserInfo selectById1(String id, String tenantId);
+	void updateRe(List<ChattingRecords> chattingRecordsList);
 
-	String selectIdByRole(String code);
+	IPage<ChattingRecords> selectPage1(IPage<ChattingRecords> page, @Param("query") ChattingRecords chattingRecords);
 
 }

@@ -8,6 +8,7 @@
  */
 package com.aiforest.cloud.estate.common.entity;
 
+import com.aiforest.cloud.common.data.mybatis.typehandler.ArrayStringTypeHandler;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -18,6 +19,7 @@ import lombok.EqualsAndHashCode;
     import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
+import org.apache.ibatis.type.JdbcType;
 
 /**
  * 房产用户
@@ -142,7 +144,8 @@ public class UserInfo extends Model<UserInfo> {
 	 * 业务指向ID
 	 */
 	@ApiModelProperty(value = "业务指向ID")
-	private String distribution;
+	@TableField(typeHandler = ArrayStringTypeHandler.class, jdbcType= JdbcType.VARCHAR)
+	private String[] distribution;
 	/**
 	 * 用户二维码
 	 */

@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+
+package com.aiforest.cloud.common.grpc.api;
+
+message ChattingRecordsUnReadCountRequest {
+    string tenantId = 1;
+    string affiliationId = 2;
+    string userId = 3;
+    string salesmanId = 4;
+}
+
+message ChattingRecordsUnReadCountResponse {
+   int32 unReadCount = 1;
+}
+
+message ChattingRecordsReceivedRequest {
+    string tenantId = 1;
+    string affiliationId = 2;
+    string userId = 3;
+    string salesmanId = 4;
+}
+
+message ChattingRecordsReceivedResponse {
+   string succeed = 1;
+}
+
+message ChattingRecordsSendRequest {
+    string tenantId = 1;
+    string affiliationId = 2;
+    string userId = 3;
+    string salesmanId = 4;
+    string messageblob = 5;
+    string type = 6;
+}
+
+message ChattingRecordsSendResponse {
+   string succeed = 1;
+}
+
+message ChattingRecordsDelRequest {
+    string id = 1;
+}
+
+message ChattingRecordsDelResponse {
+   string succeed = 1;
+}
+
+message ChattingRecordsPageRequest {
+    int32 currentPage = 1;
+    int32 pageSize = 2;
+    string userId = 3;
+    string affiliationId = 4;
+    string tenantId = 5;
+}
+
+message ChattingRecordsPageResponse {
+    int32 total = 1;
+    int32 currentPage = 2;
+    int32 pageSize = 3;
+    repeated ChattingRecords chattingRecords = 4;
+}
+
+message ChattingRecords {
+   string id = 1;
+   string tenantId = 2;
+   string affiliationId = 3;
+   string createTime = 4;
+   string senderId = 5;
+   string receiverId = 6;
+   string messageblob = 7;
+   string status = 8;
+   string type = 9;
+}
+
+service ChattingRecordsService {
+    rpc unRead(ChattingRecordsUnReadCountRequest) returns (ChattingRecordsUnReadCountResponse);
+    rpc received(ChattingRecordsReceivedRequest) returns (ChattingRecordsReceivedResponse);
+    rpc send(ChattingRecordsSendRequest) returns (ChattingRecordsSendResponse);
+    rpc del(ChattingRecordsDelRequest) returns (ChattingRecordsDelResponse);
+    rpc page(ChattingRecordsPageRequest) returns (ChattingRecordsPageResponse);
+}

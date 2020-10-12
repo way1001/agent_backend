@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.aiforest.com
+  ~ 注意：
+  ~ 本软件为www.aiforest.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiforest.cloud.broker.admin.mapper.ChattingRecordsMapper">
+
+    <resultMap id="chattingRecordsMap" type="com.aiforest.cloud.broker.common.entity.ChattingRecords">
+        <id property="id" column="id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="affiliationId" column="affiliation_id"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="senderId" column="sender_id"/>
+        <result property="receiverId" column="receiver_id"/>
+        <result property="messageblob" column="messageblob"/>
+        <result property="status" column="status"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+    <sql id="chattingRecordsSql">
+        chatting_records.`id`,
+        chatting_records.`tenant_id`,
+        chatting_records.`affiliation_id`,
+        chatting_records.`del_flag`,
+        chatting_records.`create_time`,
+        chatting_records.`sender_id`,
+        chatting_records.`receiver_id`,
+        chatting_records.`messageblob`,
+        chatting_records.`status`,
+        chatting_records.`type`
+    </sql>
+
+	<update id="updateRe" parameterType="java.util.List">
+		UPDATE
+		chatting_records
+		SET status = CASE
+		<foreach collection="list" item="item" index="index">
+			WHEN id = #{item.id} THEN '1'
+		</foreach>
+		END
+		WHERE id IN
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+			#{item.id}
+		</foreach>
+	</update>
+
+	<select id="selectPage1" resultMap="chattingRecordsMap">
+		SELECT
+		<include refid="chattingRecordsSql"/>
+		FROM chatting_records chatting_records
+		<where>
+			<if test="query.affiliationId != null">
+				AND chatting_records.`affiliation_id` = #{query.affiliationId}
+			</if>
+			<if test="query.tenantId != null">
+				AND chatting_records.`tenant_id` = #{query.tenantId}
+			</if>
+			<if test="query.senderId != null and query.receiverId != ''">
+				AND (chatting_records.`sender_id` = #{query.senderId}
+				OR chatting_records.`receiver_id` = #{query.receiverId})
+			</if>
+		</where>
+	</select>
+
+</mapper>
